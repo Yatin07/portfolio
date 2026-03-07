@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export function Education() {
     const edu = [
         {
@@ -21,26 +25,40 @@ export function Education() {
     ];
 
     return (
-        <section id="education" className="py-20 px-4 bg-slate-50">
-            <div className="container mx-auto max-w-4xl">
-                <h2 className="text-3xl font-bold mb-10 flex items-center gap-2 text-primary">
-                    <span className="text-secondary">{"//"}</span> Education
-                </h2>
+        <section id="education" className="py-24 px-4 bg-slate-50 relative overflow-hidden">
+            <div className="container mx-auto max-w-4xl relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <h2 className="text-4xl font-black mb-16 flex items-center gap-3 text-slate-900">
+                        <span className="text-secondary text-5xl">{"/"}</span> Education
+                    </h2>
+                </motion.div>
 
                 <div className="space-y-6">
                     {edu.map((item, i) => (
-                        <div key={i} className="flex flex-col md:flex-row gap-4 justify-between bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-300 transition-colors">
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: i * 0.15 }}
+                            className="flex flex-col md:flex-row gap-4 justify-between glass glass-hover p-8 rounded-2xl border-l-4 border-l-secondary"
+                        >
                             <div>
-                                <h3 className="text-xl font-bold text-primary">{item.title}</h3>
-                                <p className="text-slate-600 mt-1 font-medium">{item.inst}</p>
+                                <h3 className="text-2xl font-black text-slate-900 mb-2">{item.title}</h3>
+                                <p className="text-slate-600 font-bold">{item.inst}</p>
                             </div>
-                            <div className="md:text-right">
-                                <span className="inline-block px-4 py-1.5 bg-accent text-secondary rounded-full text-sm font-bold mb-2">
+                            <div className="md:text-right flex flex-col justify-center">
+                                <span className="inline-block px-4 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-full text-sm font-black mb-3 self-start md:self-end shadow-sm">
                                     {item.year}
                                 </span>
-                                <p className="font-semibold text-slate-800">{item.score}</p>
+                                <p className="font-black text-slate-800 text-lg">{item.score}</p>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
