@@ -2,47 +2,52 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Mail } from "lucide-react";
+import Image from "next/image";
 
 export function Hero() {
     return (
-        <section className="pt-32 pb-20 px-4 min-h-[80vh] flex flex-col justify-center items-center text-center">
+        <section className="pt-32 pb-20 px-4 min-h-[85vh] flex flex-col justify-center items-center text-center bg-gradient-to-b from-white to-slate-50">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="max-w-3xl mx-auto"
+                className="max-w-4xl mx-auto"
             >
-                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mx-auto mb-8 bg-slate-200 dark:bg-slate-800 border-4 border-white dark:border-slate-900 shadow-xl">
-                    {/* Default user placeholder if image not found */}
-                    <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-slate-400">
-                        YP
-                    </div>
+                <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden mx-auto mb-8 border-4 border-white shadow-xl relative">
+                    <Image
+                        src="/profile.png"
+                        alt="Yatin Patil"
+                        fill
+                        className="object-cover"
+                        priority
+                    />
                 </div>
 
-                <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight mb-6">
-                    Hi, I'm <span className="text-blue-600 dark:text-blue-500">Yatin Patil</span>
+                <h1 className="text-4xl sm:text-7xl font-extrabold tracking-tight mb-6 text-primary">
+                    Hi, I'm <span className="text-secondary">Yatin Patil</span>
                 </h1>
 
-                <p className="text-xl sm:text-2xl text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto font-light">
+                <p className="text-xl sm:text-2xl text-slate-600 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
                     Building intelligent systems with Data Science, AI, and scalable software solutions.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <a
                         href="#projects"
-                        className="w-full sm:w-auto px-8 py-3 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-medium hover:scale-105 transition-transform flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto px-8 py-4 rounded-full bg-secondary text-white font-semibold hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
                     >
                         View Projects <ArrowRight size={18} />
                     </a>
                     <a
-                        href="#"
-                        className="w-full sm:w-auto px-8 py-3 rounded-full border border-slate-300 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors flex items-center justify-center gap-2"
+                        href="/Yatin_Patil_resume.pdf"
+                        download="Yatin_Patil_Resume.pdf"
+                        className="w-full sm:w-auto px-8 py-4 rounded-full bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-colors flex items-center justify-center gap-2 shadow-sm"
                     >
                         <Download size={18} /> Resume
                     </a>
                     <a
                         href="#contact"
-                        className="w-full sm:w-auto px-8 py-3 rounded-full border border-slate-300 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto px-8 py-4 rounded-full bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-colors flex items-center justify-center gap-2 shadow-sm"
                     >
                         <Mail size={18} /> Contact
                     </a>

@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-blue-600: #2563eb;
-  --color-blue-500: #3b82f6;
+  --color-primary: #0A2540;
+  /* Deep Navy Blue */
+  --color-secondary: #0052FF;
+  /* Bright Professional Blue */
+  --color-accent: #E5F0FF;
+  /* Very Light Blue */
   --font-sans: 'Inter', sans-serif;
 }
 
@@ -10,10 +14,8 @@
   html {
     scroll-behavior: smooth;
   }
+
   body {
-    @apply bg-white text-slate-900 transition-colors duration-300;
-  }
-  .dark body {
-    @apply bg-slate-950 text-slate-50;
+    @apply bg-slate-50 text-primary antialiased;
   }
 }
