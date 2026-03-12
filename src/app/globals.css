@@ -13,7 +13,7 @@
   }
 
   body {
-    @apply bg-[#F8FAFC] text-[#0F172A] antialiased;
+    @apply bg-white text-slate-900 antialiased;
     font-size: 16px;
     line-height: 1.7;
   }
@@ -29,28 +29,4 @@
   }
 }
 
-@layer utilities {
-  .glass-premium {
-    @apply bg-white/70 backdrop-blur-xl border border-slate-200/50 shadow-sm rounded-2xl;
-  }
-
-  .glass-premium-hover {
-    @apply hover:bg-white/90 hover:shadow-xl hover:-translate-y-1.5 hover:border-indigo-500/30 transition-all duration-300;
-  }
-
-  .text-gradient-premium {
-    background: linear-gradient(135deg, #6366F1, #9333EA);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .btn-primary-gradient {
-    background: linear-gradient(135deg, #4F46E5, #9333EA);
-    @apply text-white shadow-lg hover:shadow-indigo-500/25 hover:-translate-y-0.5 transition-all;
-  }
-
-  .bg-animated-mesh {
-    background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.05), transparent 40%),
-      radial-gradient(circle at bottom right, rgba(147, 51, 234, 0.05), transparent 40%);
-  }
-}
+@layer utilities {}
