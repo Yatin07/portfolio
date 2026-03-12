@@ -4,16 +4,16 @@ import { motion } from "framer-motion";
 
 export function About() {
     return (
-        <section id="about" className="py-20 px-4">
+        <section id="about" className="py-24 px-4">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5 }}
-                className="mb-10"
+                className="mb-12 max-w-[1100px] mx-auto"
             >
-                <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                    <span className="text-slate-400 font-mono text-lg">1.</span> About
+                <h2 className="text-[#0F172A] mb-4">
+                    1. About
                 </h2>
             </motion.div>
 
@@ -22,7 +22,7 @@ export function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="max-w-3xl text-slate-600 space-y-6 text-lg leading-relaxed"
+                className="max-w-[1100px] mx-auto text-[#475569] space-y-6 text-lg md:text-xl leading-relaxed font-medium"
             >
                 <p>
                     I'm an Information Technology student currently focusing on Data Science, Artificial Intelligence, and Web Development. I enjoy digging into messy datasets to find patterns, and I build end-to-end applications to serve those insights.

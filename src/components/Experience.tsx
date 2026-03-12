@@ -4,43 +4,50 @@ import { motion } from "framer-motion";
 
 export function Experience() {
     return (
-        <section id="experience" className="py-20 px-4">
+        <section id="experience" className="py-24 px-4">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5 }}
-                className="mb-10"
+                className="mb-12"
             >
-                <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                    <span className="text-slate-400 font-mono text-lg">4.</span> Experience
+                <h2 className="text-[#0F172A] mb-4">
+                    4. Experience
                 </h2>
             </motion.div>
 
-            <div className="max-w-3xl">
+            <div className="max-w-[1100px] mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.4 }}
-                    className="flex flex-col sm:flex-row sm:items-baseline justify-between py-6"
+                    className="premium-card p-8 flex flex-col md:flex-row md:items-start justify-between gap-6"
                 >
-                    <div className="flex-1 pr-8">
-                        <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-lg font-bold text-slate-900">Data Analytics Summer Intern</h3>
-                            <span className="text-sm px-2 py-0.5 bg-slate-100 text-slate-600 rounded">Remote</span>
+                    <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-4 mb-3">
+                            <h3 className="text-[#0F172A]">Data Analytics Summer Intern</h3>
+                            <span className="text-xs font-semibold px-3 py-1 bg-[#EEF2FF] text-[#4338CA] rounded-full">Remote</span>
                         </div>
-                        <p className="text-slate-500 font-medium mb-4">IBM SkillsBuild</p>
+                        <p className="text-[#1E3A8A] font-semibold mb-6">IBM SkillsBuild</p>
 
-                        <ul className="list-disc leading-relaxed text-slate-600 ml-5 space-y-2">
-                            <li>Conducted comprehensive data cleaning, formatting, and exploratory data analysis (EDA) on real-world datasets to extract actionable insights.</li>
-                            <li>Designed and built interactive data visualizations and dashboards to effectively communicate analytical findings to stakeholders.</li>
-                            <li>Applied predictive modeling techniques to identify trends and improve decision-making processes based on historical data.</li>
+                        <ul className="list-none space-y-3">
+                            {[
+                                "Conducted comprehensive data cleaning, formatting, and exploratory data analysis (EDA) on real-world datasets to extract actionable insights.",
+                                "Designed and built interactive data visualizations and dashboards to effectively communicate analytical findings to stakeholders.",
+                                "Applied predictive modeling techniques to identify trends and improve decision-making processes based on historical data."
+                            ].map((bullet, idx) => (
+                                <li key={idx} className="flex items-start gap-4">
+                                    <span className="text-[#7C3AED] mt-1.5">•</span>
+                                    <span className="text-[#475569] leading-relaxed">{bullet}</span>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
-                    <div className="mt-4 sm:mt-0 sm:text-right shrink-0">
-                        <span className="text-sm font-mono text-slate-400">
+                    <div className="shrink-0 pt-2 md:pt-0">
+                        <span className="text-sm font-semibold text-[#94A3B8]">
                             June 2024 – August 2024
                         </span>
                     </div>

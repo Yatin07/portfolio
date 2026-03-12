@@ -22,20 +22,20 @@ export function Achievements() {
     ];
 
     return (
-        <section id="achievements" className="py-20 px-4">
+        <section id="achievements" className="py-24 px-4">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5 }}
-                className="mb-10"
+                className="mb-12"
             >
-                <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                    <span className="text-slate-400 font-mono text-lg">6.</span> Achievements
+                <h2 className="text-[#0F172A] mb-4">
+                    6. Achievements
                 </h2>
             </motion.div>
 
-            <div className="space-y-6 max-w-3xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
                 {achievements.map((item, i) => (
                     <motion.div
                         key={i}
@@ -43,11 +43,11 @@ export function Achievements() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.4, delay: i * 0.1 }}
-                        className="py-6 border-b border-slate-200 last:border-0"
+                        className="premium-card p-8 flex flex-col h-full"
                     >
-                        <h3 className="text-lg font-bold text-slate-900 mb-1">{item.title}</h3>
-                        <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">{item.org}</p>
-                        <p className="text-slate-600 leading-relaxed">{item.desc}</p>
+                        <h3 className="text-[#0F172A] mb-2">{item.title}</h3>
+                        <p className="text-sm font-semibold text-[#1E3A8A] uppercase tracking-wider mb-4">{item.org}</p>
+                        <p className="text-[#475569] leading-relaxed flex-grow">{item.desc}</p>
                     </motion.div>
                 ))}
             </div>

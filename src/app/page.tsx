@@ -11,9 +11,9 @@ import { Contact } from "@/components/Contact";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-slate-900 font-sans selection:bg-blue-200 selection:text-blue-900 overflow-x-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] font-sans selection:bg-[#E0E7FF] selection:text-[#1E3A8A] overflow-x-hidden">
       <Navbar />
-      <main className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pt-20">
+      <main className="w-full">
         <Hero />
         <About />
         <Education />

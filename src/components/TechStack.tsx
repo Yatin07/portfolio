@@ -9,7 +9,7 @@ export function TechStack() {
             skills: ["Python", "JavaScript", "Java"]
         },
         {
-            title: "Web",
+            title: "Web Development",
             skills: ["HTML", "CSS", "React", "Node.js"]
         },
         {
@@ -23,20 +23,20 @@ export function TechStack() {
     ];
 
     return (
-        <section id="techstack" className="py-20 px-4">
+        <section id="techstack" className="py-24 px-4">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5 }}
-                className="mb-10"
+                className="mb-12"
             >
-                <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                    <span className="text-slate-400 font-mono text-lg">7.</span> Tech Stack
+                <h2 className="text-[#0F172A] mb-4">
+                    7. Tech Stack
                 </h2>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[1100px] mx-auto">
                 {categories.map((cat, i) => (
                     <motion.div
                         key={i}
@@ -44,14 +44,14 @@ export function TechStack() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.4, delay: i * 0.1 }}
-                        className="py-2"
+                        className="premium-card p-8"
                     >
-                        <h3 className="text-lg font-bold text-slate-900 mb-4">{cat.title}</h3>
-                        <div className="flex flex-wrap gap-2">
+                        <h3 className="text-[#0F172A] mb-6">{cat.title}</h3>
+                        <div className="flex flex-wrap gap-3">
                             {cat.skills.map((skill, j) => (
                                 <span
                                     key={j}
-                                    className="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium border border-slate-200"
+                                    className="px-4 py-2 bg-[#F8FAFC] text-[#475569] rounded-lg text-sm font-medium border border-[#E2E8F0] shadow-sm"
                                 >
                                     {skill}
                                 </span>

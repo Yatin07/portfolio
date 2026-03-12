@@ -25,20 +25,20 @@ export function Education() {
     ];
 
     return (
-        <section id="education" className="py-20 px-4">
+        <section id="education" className="py-24 px-4">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5 }}
-                className="mb-10"
+                className="mb-12 text-center md:text-left"
             >
-                <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                    <span className="text-slate-400 font-mono text-lg">2.</span> Education
+                <h2 className="text-[#0F172A] mb-4">
+                    2. Education
                 </h2>
             </motion.div>
 
-            <div className="space-y-6 max-w-3xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
                 {edu.map((item, i) => (
                     <motion.div
                         key={i}
@@ -46,17 +46,15 @@ export function Education() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.4, delay: i * 0.1 }}
-                        className="flex flex-col sm:flex-row sm:items-baseline justify-between py-6 border-b border-slate-200 last:border-0"
+                        className="premium-card p-8 flex flex-col h-full"
                     >
-                        <div>
-                            <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
-                            <p className="text-slate-500 font-medium">{item.inst}</p>
-                        </div>
-                        <div className="mt-2 sm:mt-0 sm:text-right">
-                            <span className="text-sm font-mono text-slate-400 block mb-1">
-                                {item.year}
+                        <span className="text-sm font-semibold text-[#94A3B8] block mb-2">{item.year}</span>
+                        <h3 className="text-[#0F172A] mb-2">{item.title}</h3>
+                        <p className="text-[#1E3A8A] font-semibold mb-3">{item.inst}</p>
+                        <div className="mt-auto">
+                            <span className="inline-block px-3 py-1 bg-[#EEF2FF] text-[#4338CA] rounded-full text-sm font-semibold">
+                                {item.score}
                             </span>
-                            <p className="font-semibold text-slate-700">{item.score}</p>
                         </div>
                     </motion.div>
                 ))}
