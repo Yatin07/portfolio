@@ -47,7 +47,7 @@ export function Hero() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, staggerChildren: 0.2 }}
-                className="max-w-4xl mx-auto relative z-10"
+                className="max-w-4xl mx-auto relative z-10 pt-12 md:pt-20"
             >
                 {/* Floating Profile Image */}
                 <motion.div
@@ -55,20 +55,21 @@ export function Hero() {
                     animate={{
                         scale: 1,
                         opacity: 1,
-                        y: [-10, 10, -10]
+                        y: [-8, 8, -8]
                     }}
                     transition={{
                         scale: { type: "spring", stiffness: 100, damping: 20 },
                         opacity: { duration: 0.5 },
-                        y: { repeat: Infinity, duration: 4, ease: "easeInOut" }
+                        y: { repeat: Infinity, duration: 5, ease: "easeInOut" }
                     }}
-                    className="w-40 h-40 sm:w-48 sm:h-48 rounded-3xl overflow-hidden mx-auto mb-8 border-[6px] border-white shadow-2xl relative bg-white hover:scale-105 transition-transform duration-500"
+                    className="w-32 h-32 md:w-40 md:h-40 rounded-[2rem] overflow-hidden mx-auto mb-10 border-[4px] border-white/60 shadow-[0_20px_40px_-15px_rgba(79,70,229,0.3)] relative bg-white transition-transform duration-500 hover:scale-105 group"
                 >
+                    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 rounded-[2rem]"></div>
                     <Image
                         src="/profile.png"
                         alt="Yatin Patil"
                         fill
-                        className="object-contain object-bottom scale-110" // object-contain to prevent cropping, object-bottom to align
+                        className="object-contain object-bottom scale-110"
                         priority
                     />
                 </motion.div>
@@ -77,27 +78,26 @@ export function Hero() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass mb-6 text-sm font-black text-slate-800 shadow-sm"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-premium mb-8 text-xs font-bold text-slate-700 shadow-sm"
                 >
-                    <Sparkles size={16} className="text-[#6366F1]" />
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#6366F1] to-[#9333EA]">
-                        Available for new opportunities
-                    </span>
+                    <Sparkles size={14} className="text-[#2563EB]" />
+                    <span>Available for new opportunities</span>
                 </motion.div>
 
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter mb-4 text-slate-900"
+                    className="font-black tracking-tight mb-6 text-slate-900 leading-[1.1]"
+                    style={{ fontSize: "clamp(48px, 6vw, 72px)" }}
                 >
-                    Hi, I'm <br className="sm:hidden" /><span className="text-gradient">Yatin Patil</span>
+                    Hi, I'm <br className="sm:hidden" /><span className="text-gradient-premium">Yatin Patil</span>
                 </motion.h1>
 
                 <div className="h-10 sm:h-12 mb-6">
                     {mounted && (
-                        <h2 className="text-2xl sm:text-3xl font-bold text-slate-700">
-                            <TypewriterText text="Data Science & AI Enthusiast" />
+                        <h2 className="text-2xl sm:text-3xl font-bold text-slate-600 tracking-tight">
+                            <TypewriterText text="Data Science & AI Engineer" />
                         </h2>
                     )}
                 </div>
@@ -106,35 +106,35 @@ export function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 }}
-                    className="text-lg sm:text-xl text-slate-600 mb-10 max-w-2xl mx-auto font-medium leading-relaxed"
+                    className="text-lg text-slate-500 mb-12 max-w-2xl mx-auto font-medium leading-relaxed"
                 >
-                    Building intelligent systems using Machine Learning, Analytics and scalable web technologies.
+                    I build intelligent systems using machine learning, analytics dashboards, and scalable web technologies.
                 </motion.p>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
-                    className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
+                    className="flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
                     <a
                         href="#projects"
-                        className="w-full sm:w-auto px-8 py-4 rounded-xl btn-gradient font-black flex items-center justify-center gap-2 text-lg"
+                        className="w-full sm:w-auto px-8 py-3.5 rounded-xl btn-primary-gradient font-bold flex items-center justify-center gap-2"
                     >
-                        View Projects <ArrowRight size={20} />
+                        View Projects <ArrowRight size={18} />
                     </a>
                     <a
                         href="/Yatin_Patil_resume.pdf"
                         download="Yatin_Patil_Resume.pdf"
-                        className="w-full sm:w-auto px-8 py-4 rounded-xl glass glass-hover text-slate-800 font-bold flex items-center justify-center gap-2 text-lg"
+                        className="w-full sm:w-auto px-8 py-3.5 rounded-xl glass-premium glass-premium-hover text-slate-800 font-bold flex items-center justify-center gap-2"
                     >
-                        <Download size={20} /> Download Resume
+                        <Download size={18} /> Download Resume
                     </a>
                     <a
                         href="#contact"
-                        className="w-full sm:w-auto px-8 py-4 rounded-xl glass glass-hover text-slate-800 font-bold flex items-center justify-center gap-2 text-lg"
+                        className="w-full sm:w-auto px-8 py-3.5 rounded-xl text-slate-600 hover:text-slate-900 border border-transparent hover:border-slate-200 hover:bg-slate-50 font-bold flex items-center justify-center gap-2 transition-all"
                     >
-                        <Mail size={20} /> Contact Me
+                        Contact Me
                     </a>
                 </motion.div>
             </motion.div>
