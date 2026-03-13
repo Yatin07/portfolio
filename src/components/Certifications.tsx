@@ -26,11 +26,11 @@ export function Certifications() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5 }}
-                className="mb-12"
+                className="mb-12 max-w-[1100px] mx-auto flex items-center gap-4"
             >
-                <h2 className="text-[#0F172A] mb-4">
-                    5. Certifications
-                </h2>
+                <span className="text-4xl md:text-5xl font-light text-[#CBD5E1]">05</span>
+                <h2 className="text-[#0F172A] m-0">Certifications</h2>
+                <div className="flex-grow h-px bg-[#E2E8F0] ml-4 md:ml-6"></div>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[1100px] mx-auto">

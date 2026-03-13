@@ -10,11 +10,11 @@ export function Experience() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5 }}
-                className="mb-12"
+                className="mb-12 max-w-[1100px] mx-auto flex items-center gap-4"
             >
-                <h2 className="text-[#0F172A] mb-4">
-                    4. Experience
-                </h2>
+                <span className="text-4xl md:text-5xl font-light text-[#CBD5E1]">04</span>
+                <h2 className="text-[#0F172A] m-0">Experience</h2>
+                <div className="flex-grow h-px bg-[#E2E8F0] ml-4 md:ml-6"></div>
             </motion.div>
 
             <div className="max-w-[1100px] mx-auto">

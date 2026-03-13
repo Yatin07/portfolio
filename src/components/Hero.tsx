@@ -28,12 +28,12 @@ export function Hero() {
                         <motion.div
                             animate={{ y: [0, -10, 0] }}
                             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                            className="relative w-[280px] h-[280px] md:w-[300px] md:h-[300px] rounded-full overflow-hidden shadow-[0_6px_24px_rgba(0,0,0,0.06)] border border-[#E2E8F0] bg-white group ring-4 ring-white"
+                            className="relative w-[280px] h-[340px] md:w-[320px] md:h-[390px] rounded-2xl overflow-hidden shadow-[0_12px_30px_rgba(0,0,0,0.08)] border border-[#E2E8F0] bg-white group p-2"
                         >
                             <img
                                 src="/profile.png"
                                 alt="Yatin Patil"
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                className="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500"
                                 onError={() => setImgError(true)}
                             />
                         </motion.div>
