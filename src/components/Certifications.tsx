@@ -20,7 +20,7 @@ export function Certifications() {
     ];
 
     return (
-        <section id="certifications" className="py-24 px-4">
+        <section id="certifications" className="py-[100px] px-4">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

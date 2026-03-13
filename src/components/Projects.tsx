@@ -29,20 +29,20 @@ export function Projects() {
     ];
 
     return (
-        <section id="projects" className="py-24 px-4">
+        <section id="projects" className="py-[100px] px-4">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5 }}
-                className="mb-12"
+                className="mb-12 max-w-[1100px] mx-auto"
             >
                 <h2 className="text-[#0F172A] mb-4">
                     3. Projects
                 </h2>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[1100px] mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
                 {projects.map((p, i) => (
                     <motion.div
                         key={p.title}
@@ -50,34 +50,37 @@ export function Projects() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.4, delay: i * 0.1 }}
-                        className="premium-card p-8 flex flex-col h-full"
+                        className="premium-card p-8 flex flex-col h-full hover:-translate-y-[6px] hover:border-[#CBD5E1] transition-all duration-300"
                     >
-                        <div className="flex justify-between items-start mb-4">
-                            <h3 className="text-[#0F172A]">{p.title}</h3>
-                            <div className="flex items-center gap-3">
-                                {p.github !== "#" && (
-                                    <a href={p.github} target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-[#1E3A8A] transition-colors">
-                                        <Github size={20} />
-                                    </a>
-                                )}
-                                {p.live !== "#" && (
-                                    <a href={p.live} target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-[#1E3A8A] transition-colors">
-                                        <ExternalLink size={20} />
-                                    </a>
-                                )}
-                            </div>
-                        </div>
+                        <h3 className="text-xl font-bold text-[#0F172A] mb-4">{p.title}</h3>
 
-                        <p className="text-[#475569] mb-6 flex-grow leading-relaxed">
+                        <p className="text-[#475569] mb-6 leading-relaxed">
                             {p.desc}
                         </p>
 
-                        <div className="flex flex-wrap gap-2 mt-auto">
+                        <div className="flex flex-wrap gap-2 mb-8 mt-auto">
                             {p.tech.map((t, j) => (
                                 <span key={j} className="text-xs font-semibold px-3 py-1 bg-[#EEF2FF] text-[#4338CA] rounded-full">
                                     {t}
                                 </span>
                             ))}
+                        </div>
+
+                        <div className="flex gap-4">
+                            {p.github !== "#" && (
+                                <a href={p.github} target="_blank" rel="noopener noreferrer" className="flex-1 flex justify-center items-center gap-2 py-2 px-4 rounded-lg border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:text-[#1E3A8A] hover:bg-[#F8FAFC] transition-colors">
+                                    <Github size={16} /> GitHub
+                                </a>
+                            )}
+                            {p.live !== "#" ? (
+                                <a href={p.live} target="_blank" rel="noopener noreferrer" className="flex-1 flex justify-center items-center gap-2 py-2 px-4 rounded-lg bg-[#1E3A8A] text-white text-sm font-semibold hover:bg-[#1E3A8A]/90 transition-colors">
+                                    <ExternalLink size={16} /> Live Demo
+                                </a>
+                            ) : (
+                                <span className="flex-1 flex justify-center items-center gap-2 py-2 px-4 rounded-lg border border-[#E2E8F0] text-sm font-semibold text-[#94A3B8] cursor-not-allowed bg-slate-50">
+                                    <ExternalLink size={16} /> Live Demo
+                                </span>
+                            )}
                         </div>
                     </motion.div>
                 ))}

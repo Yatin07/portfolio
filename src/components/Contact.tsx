@@ -5,25 +5,25 @@ import { Github, Linkedin, Mail } from "lucide-react";
 
 export function Contact() {
     return (
-        <section id="contact" className="py-24 px-4 mb-10">
+        <section id="contact" className="py-[100px] px-4">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5 }}
-                className="mb-12 text-center md:text-left"
+                className="mb-12 max-w-[1100px] mx-auto"
             >
                 <h2 className="text-[#0F172A] mb-4">Contact</h2>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-[1100px] mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                    <p className="text-lg mb-8 leading-relaxed max-w-md">
+                    <p className="text-lg mb-8 leading-[1.7] text-[#475569] max-w-md font-medium">
                         I'm currently open to internships, collaborations, and interesting projects. Whether you have a question or just want to say hi, my inbox is always open!
                     </p>
 
@@ -70,7 +70,7 @@ export function Contact() {
                         </div>
                         <button
                             type="button"
-                            className="mt-4 w-full py-3 btn-primary"
+                            className="mt-4 w-full btn-primary"
                         >
                             Send Message
                         </button>

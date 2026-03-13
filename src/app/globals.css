@@ -51,19 +51,33 @@
 
 @layer utilities {
   .premium-card {
-    @apply bg-white border border-[#E2E8F0] shadow-sm rounded-xl transition-all duration-200;
+    @apply bg-white border border-[#E2E8F0] shadow-sm rounded-xl transition-all;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
   }
 
   .premium-card:hover {
     transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
   }
 
   .btn-primary {
-    @apply bg-[#1E3A8A] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#1e3a8a]/90 transition-colors shadow-sm;
+    @apply bg-[#1E3A8A] text-white px-6 py-3 rounded-lg font-medium shadow-sm inline-flex items-center justify-center;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    @apply bg-[#1e3a8a]/90 shadow-md;
+    transform: translateY(-2px);
   }
 
   .btn-secondary {
-    @apply bg-white border border-[#CBD5F5] text-[#1E3A8A] px-6 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-sm;
+    @apply bg-transparent border-2 border-[#E2E8F0] text-[#1E3A8A] px-6 py-3 rounded-lg font-medium shadow-sm inline-flex items-center justify-center;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary:hover {
+    @apply border-[#CBD5E1] bg-[#F8FAFC] shadow-md;
+    transform: translateY(-2px);
   }
 }
