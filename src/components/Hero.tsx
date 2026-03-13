@@ -73,7 +73,7 @@ export function Hero() {
                         transition={{ delay: 0.3 }}
                         className={`text-lg md:text-xl font-medium text-[#475569] mb-4 leading-relaxed ${imgError ? 'max-w-2xl' : 'max-w-xl'}`}
                     >
-                        Building intelligent systems using machine learning and data-driven engineering.
+                        Building intelligent systems using machine learning, data analytics, and scalable engineering solutions.
                     </motion.p>
 
                     <motion.p
@@ -82,7 +82,7 @@ export function Hero() {
                         transition={{ delay: 0.4 }}
                         className={`text-base text-[#64748B] mb-10 leading-relaxed ${imgError ? 'max-w-2xl' : 'max-w-xl'}`}
                     >
-                        I specialize in extracting actionable insights from complex datasets and engineering robust, scalable software solutions that solve real-world problems.
+                        Data Science and Analytics enthusiast skilled in Python, SQL, Power BI, and machine learning. Experienced in building predictive models, analytics dashboards, and AI-based systems through academic projects and industry internship.
                     </motion.p>
 
                     <motion.div
@@ -98,7 +98,7 @@ export function Hero() {
                             <Mail size={18} /> Contact Me
                         </a>
                         <a href="/Yatin_Patil_resume.pdf" download="Yatin_Patil_Resume.pdf" className="text-[#475569] hover:text-[#1E3A8A] font-medium flex items-center gap-2 px-4 py-3 transition-colors">
-                            <FileText size={18} /> Resume
+                            <FileText size={18} /> Download Resume
                         </a>
                     </motion.div>
 

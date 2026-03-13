@@ -25,8 +25,8 @@ export function Contact() {
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                    <p className="text-lg mb-8 leading-[1.7] text-[#475569] max-w-md font-medium">
-                        I'm currently open to internships, collaborations, and interesting projects. Whether you have a question or just want to say hi, my inbox is always open!
+                    <p className="text-lg flex flex-col mb-8 leading-[1.7] text-[#475569] max-w-md font-medium">
+                        I'm currently open to internships, collaborations, and data science opportunities.
                     </p>
 
                     <div className="space-y-6">
@@ -40,13 +40,13 @@ export function Contact() {
                             <div className="p-3 bg-[#EEF2FF] rounded-lg group-hover:bg-[#E0E7FF] transition-colors">
                                 <Github size={20} className="text-[#4338CA]" />
                             </div>
-                            <span className="font-semibold">GitHub</span>
+                            <span className="font-semibold">github.com/Yatin07</span>
                         </a>
-                        <a href="https://www.linkedin.com/in/yatinpatil07" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-[#475569] hover:text-[#1E3A8A] transition-colors group">
+                        <a href="https://linkedin.com/in/yatinpatil07" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-[#475569] hover:text-[#1E3A8A] transition-colors group">
                             <div className="p-3 bg-[#EEF2FF] rounded-lg group-hover:bg-[#E0E7FF] transition-colors">
                                 <Linkedin size={20} className="text-[#4338CA]" />
                             </div>
-                            <span className="font-semibold">LinkedIn</span>
+                            <span className="font-semibold">linkedin.com/in/yatinpatil07</span>
                         </a>
                     </div>
                 </motion.div>
@@ -57,7 +57,7 @@ export function Contact() {
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.4, delay: 0.2 }}
                 >
-                    <form className="premium-card p-8 flex flex-col gap-5">
+                    <form className="premium-card p-8 flex flex-col gap-5 hover:-translate-y-[8px] hover:border-[#CBD5E1]">
                         <div className="flex flex-col gap-2">
                             <label htmlFor="name" className="text-sm font-semibold text-[#0F172A]">Name</label>
                             <input type="text" id="name" placeholder="John Doe" className="w-full px-4 py-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-colors text-[#0F172A] placeholder:text-[#94A3B8]" />

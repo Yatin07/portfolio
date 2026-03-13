@@ -6,24 +6,39 @@ import { Github, ExternalLink } from "lucide-react";
 export function Projects() {
     const projects = [
         {
-            title: "UrbanVoice",
-            desc: "A full-stack civic issue reporting system built to streamline community problem-solving. It features role-based access, real-time ticket tracking, SLA monitoring, and AI-driven categorization for incoming requests.",
-            tech: ["Flutter", "React", "Firebase", "AI"],
-            github: "https://github.com/Yatin07/Buildathon",
-            live: "#"
-        },
-        {
-            title: "Tennis ATP Analytics",
-            desc: "An interactive Power BI dashboard analyzing historical ATP match data and rankings. Implementing a Galaxy schema design, it tracks key performance indicators (KPIs) and integrates machine learning for match outcome predictions.",
-            tech: ["Power BI", "Python", "XGBoost"],
+            title: "Tennis ATP Analytics & Prediction Dashboard",
+            desc: "Interactive Power BI dashboard analyzing ATP rankings, match statistics, and player performance metrics.",
+            features: [
+                "Designed a Galaxy Schema data model",
+                "Implemented optimized DAX measures and KPIs",
+                "Integrated an XGBoost model to predict match win probabilities"
+            ],
+            tech: ["Power BI", "Python", "XGBoost", "DAX"],
             github: "https://github.com/Yatin07/Tennis_ATP_Analytics",
             live: "#"
         },
         {
-            title: "Agro.ai",
-            desc: "A computer vision and deep learning system designed to detect plant diseases from leaf imagery. Trained on 87k+ images across 38 disease classes utilizing a fine-tuned MobileNetV2 architecture for feature extraction.",
-            tech: ["TensorFlow", "Scikit-learn", "Python"],
+            title: "Agro.ai – AI-Based Crop Disease Detection",
+            desc: "Computer vision system detecting crop diseases using over 87,000 labeled images across 38 classes.",
+            features: [
+                "MobileNetV2 feature extraction",
+                "Random Forest and CNN model evaluation",
+                "End-to-end ML pipeline with automated disease identification"
+            ],
+            tech: ["TensorFlow", "Scikit-learn", "Python", "Computer Vision"],
             github: "https://github.com/Yatin07/Agro_AI",
+            live: "#"
+        },
+        {
+            title: "UrbanVoice – Civic Issue Management System",
+            desc: "Full-stack civic issue reporting platform built during a hackathon.",
+            features: [
+                "Role-based access control (RBAC)",
+                "Real-time issue tracking and SLA monitoring",
+                "AI-based complaint categorization and geolocation routing"
+            ],
+            tech: ["Flutter", "React (TypeScript)", "Firebase"],
+            github: "https://github.com/Yatin07/Buildathon",
             live: "#"
         }
     ];
@@ -50,13 +65,22 @@ export function Projects() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.4, delay: i * 0.1 }}
-                        className="premium-card p-8 flex flex-col h-full hover:-translate-y-[6px] hover:border-[#CBD5E1] transition-all duration-300"
+                        className="premium-card p-8 flex flex-col h-full hover:-translate-y-[8px] hover:border-[#CBD5E1] transition-all duration-300"
                     >
-                        <h3 className="text-xl font-bold text-[#0F172A] mb-4">{p.title}</h3>
+                        <h3 className="text-xl font-bold text-[#0F172A] mb-3">{p.title}</h3>
 
-                        <p className="text-[#475569] mb-6 leading-relaxed">
+                        <p className="text-[#475569] mb-4 leading-relaxed font-medium">
                             {p.desc}
                         </p>
+
+                        <ul className="mb-6 space-y-2 text-sm text-[#475569]">
+                            {p.features.map((feature, idx) => (
+                                <li key={idx} className="flex items-start gap-2">
+                                    <span className="text-[#1E3A8A] mt-1">•</span>
+                                    <span>{feature}</span>
+                                </li>
+                            ))}
+                        </ul>
 
                         <div className="flex flex-wrap gap-2 mb-8 mt-auto">
                             {p.tech.map((t, j) => (

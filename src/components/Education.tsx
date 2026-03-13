@@ -5,20 +5,20 @@ import { motion } from "framer-motion";
 export function Education() {
     const edu = [
         {
-            title: "B.Tech Information Technology",
-            inst: "NMIMS University",
+            title: "B.Tech in Information Technology",
+            inst: "MPSTME, NMIMS University",
             year: "2023 – 2027",
             score: "CGPA: 3.58 / 4.0"
         },
         {
             title: "HSC",
-            inst: "Secondary Education",
+            inst: "Sett Rustomjee Jamsetjee Jejeebhoy High School",
             year: "2023",
             score: "81.16%"
         },
         {
             title: "SSC",
-            inst: "Primary Education",
+            inst: "Sett Rustomjee Jamsetjee Jejeebhoy High School",
             year: "2021",
             score: "60.46%"
         }

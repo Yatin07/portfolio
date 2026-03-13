@@ -1,23 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Trophy, Star } from "lucide-react";
 
 export function Achievements() {
-    const achievements = [
+    const items = [
         {
-            title: "Data Analytics Virtual Internship",
-            org: "IBM SkillsBuild",
-            desc: "Completed an intensive virtual internship focused on real-world data analytics and visualization projects."
+            title: "Buildathon 2026 Participant",
+            desc: "Developed a civic issue management prototype under hackathon constraints.",
+            icon: Trophy
         },
         {
-            title: "Buildathon Participant",
-            org: "Hackathon / Innovation",
-            desc: "Collaborated to build UrbanVoice, a full-stack civic issue reporting platform with AI categorization."
-        },
-        {
-            title: "Agro.ai Innovation",
-            org: "Personal Research",
-            desc: "Developed a deep learning model for plant disease detection using MobileNetV2 with high accuracy."
+            title: "SAS Curiosity Cup Competition",
+            desc: "Participated in global data analytics competition applying statistical analysis and data reasoning.",
+            icon: Star
         }
     ];
 
@@ -35,21 +31,28 @@ export function Achievements() {
                 <div className="flex-grow h-px bg-[#E2E8F0] ml-4 md:ml-6"></div>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
-                {achievements.map((item, i) => (
-                    <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-50px" }}
-                        transition={{ duration: 0.4, delay: i * 0.1 }}
-                        className="premium-card p-8 flex flex-col h-full"
-                    >
-                        <h3 className="text-[#0F172A] mb-2">{item.title}</h3>
-                        <p className="text-sm font-semibold text-[#1E3A8A] uppercase tracking-wider mb-4">{item.org}</p>
-                        <p className="text-[#475569] leading-relaxed flex-grow">{item.desc}</p>
-                    </motion.div>
-                ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[1100px] mx-auto">
+                {items.map((item, i) => {
+                    const Icon = item.icon;
+                    return (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.4, delay: i * 0.1 }}
+                            className="premium-card p-8 flex flex-col sm:flex-row items-start gap-6 hover:-translate-y-[8px] hover:border-[#CBD5E1]"
+                        >
+                            <div className="p-4 bg-[#EEF2FF] rounded-xl text-[#1E3A8A] shrink-0">
+                                <Icon size={28} />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold text-[#0F172A] mb-2">{item.title}</h3>
+                                <p className="text-[#475569] font-medium leading-relaxed">{item.desc}</p>
+                            </div>
+                        </motion.div>
+                    );
+                })}
             </div>
         </section>
     );

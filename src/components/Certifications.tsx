@@ -1,21 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
 
 export function Certifications() {
     const certs = [
         {
             title: "Microsoft SQL Server from Scratch",
-            issuer: "Udemy",
-            year: "2026",
-            link: "#"
+            provider: "Udemy",
+            year: "2026"
         },
         {
             title: "Agentic AI: From Learner to Builder",
-            issuer: "IBM SkillsBuild",
-            year: "2025",
-            link: "#"
+            provider: "IBM SkillsBuild",
+            year: "2025"
+        },
+        {
+            title: "IBM SkillsBuild Summer Internship – Data Analytics",
+            provider: "IBM SkillsBuild",
+            year: "2024"
         }
     ];
 
@@ -33,7 +35,7 @@ export function Certifications() {
                 <div className="flex-grow h-px bg-[#E2E8F0] ml-4 md:ml-6"></div>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[1100px] mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
                 {certs.map((cert, i) => (
                     <motion.div
                         key={i}
@@ -41,18 +43,13 @@ export function Certifications() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.4, delay: i * 0.1 }}
-                        className="premium-card p-8 flex flex-col h-full"
+                        className="premium-card p-6 flex flex-col justify-between hover:-translate-y-[8px] hover:border-[#CBD5E1]"
                     >
-                        <div className="flex justify-between items-start mb-4">
-                            <span className="text-sm font-semibold text-[#475569] uppercase tracking-wider">{cert.issuer}</span>
-                            <span className="text-sm font-semibold text-[#94A3B8]">{cert.year}</span>
+                        <div>
+                            <h3 className="text-lg font-bold text-[#0F172A] mb-2">{cert.title}</h3>
+                            <p className="text-[#475569] font-medium">{cert.provider}</p>
                         </div>
-                        <h3 className="text-[#0F172A] leading-snug mb-4 group-hover:text-[#1E3A8A] transition-colors flex-grow">
-                            {cert.title}
-                        </h3>
-                        <a href={cert.link} className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#475569] hover:text-[#1E3A8A] transition-colors mt-auto">
-                            View Credential <ExternalLink size={14} />
-                        </a>
+                        <span className="text-sm font-semibold text-[#94A3B8] block mt-6">{cert.year}</span>
                     </motion.div>
                 ))}
             </div>

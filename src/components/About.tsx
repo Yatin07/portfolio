@@ -25,13 +25,13 @@ export function About() {
                 className="max-w-[650px] mx-auto text-[#475569] space-y-6 text-lg leading-[1.7] font-medium"
             >
                 <p>
-                    I'm an Information Technology student currently focusing on Data Science, Artificial Intelligence, and Web Development. I enjoy digging into messy datasets to find patterns, and I build end-to-end applications to serve those insights.
+                    I am a Data Science and Machine Learning enthusiast with a strong interest in extracting actionable insights from complex datasets. My work revolves around building robust predictive models and implementing end-to-end data analytics pipelines to solve real-world problems.
                 </p>
                 <p>
-                    Most of my recent work involves training machine learning models, creating analytics dashboards, and writing robust backend code. I like solving problems that require both a solid understanding of data and the engineering skills to put that data to work in a real product.
+                    Most of my recent experience involves analyzing large-scale data, creating interactive data analytics dashboards, and training deep learning models. I also have solid full-stack engineering exposure, which allows me to seamlessly integrate AI and data models into scalable web applications and intuitive user interfaces.
                 </p>
                 <p>
-                    Whether it's building a predictive model with Scikit-learn or spinning up a Next.js interface, I focus on writing clean, maintainable code.
+                    Whether it's designing a Galaxy Schema in Power BI, training a CNN in TensorFlow, or spinning up a responsive React dashboard, I am driven by a passion for continuous learning and engineering excellence.
                 </p>
             </motion.div>
         </section>
