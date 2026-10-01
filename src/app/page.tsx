@@ -212,72 +212,70 @@ function Nav() {
 }
 
 /* ─── Hero Diagram (organic layout) ─── */
-function HeroDiagram() {
-  const [active, setActive] = useState<string | null>(null)
-  const nodes = [
-    { id: 'problem', label: 'Problem', x: 50, y: 10, desc: 'Understanding what actually needs solving.', sub: 'Not the symptom — the root cause.' },
-    { id: 'data', label: 'Data', x: 75, y: 35, desc: 'Finding patterns that actually matter.', sub: 'CelebA, custom datasets, real-world sources.' },
-    { id: 'model', label: 'Model', x: 30, y: 55, desc: 'Testing different approaches before committing.', sub: 'CNN, RAG, XGBoost — chosen with reason.' },
-    { id: 'product', label: 'Product', x: 60, y: 78, desc: 'Turning the technical solution into something usable.', sub: 'FastAPI + React, clean UX, real users.' },
-  ]
 
+/* ─── Hero Diagram (UI/UX Showcase) ─── */
+function HeroDiagram() {
+  const [active, setActive] = useState<number | null>(null)
+  
   return (
-    <div style={{ position: 'relative', width: '100%', height: 280 }}>
-      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 200 100" preserveAspectRatio="none">
-        {[
-          [nodes[0], nodes[1]], [nodes[1], nodes[2]], [nodes[2], nodes[3]], [nodes[0], nodes[2]],
-        ].map(([a, b], i) => (
-          <line key={i}
-            x1={a.x} y1={a.y + 5} x2={b.x} y2={b.y + 5}
-            stroke={active === a.id || active === b.id ? 'var(--accent)' : 'var(--border)'}
-            strokeWidth="0.5" strokeDasharray={active === a.id || active === b.id ? '0' : '2,2'}
-            style={{ transition: 'stroke 0.2s' }}
-          />
-        ))}
-      </svg>
-      {nodes.map(n => (
-        <div key={n.id}
-          onMouseEnter={() => setActive(n.id)}
-          onMouseLeave={() => setActive(null)}
-          style={{
-            position: 'absolute', left: `${n.x}%`, top: `${n.y}%`,
-            transform: `translate(-50%,-50%) scale(${active === n.id ? 1.05 : 1})`,
-            transition: 'transform 0.2s',
-            zIndex: active === n.id ? 10 : 1,
-            cursor: 'none',
-          }}>
-          <div style={{
-            padding: '7px 16px',
-            background: active === n.id ? 'var(--accent)' : 'var(--card-bg)',
-            color: active === n.id ? 'var(--card-bg)' : 'var(--text-main)',
-            border: `1.5px solid ${active === n.id ? 'var(--accent)' : 'var(--border)'}`,
-            borderRadius: 5, fontSize: 12, fontWeight: 600, letterSpacing: '0.04em',
-            boxShadow: active === n.id ? '0 4px 16px #3157E820' : '0 1px 4px #0000000a',
-            transition: 'all 0.2s', whiteSpace: 'nowrap',
-          }}>
-            {n.label}
-          </div>
-          {active === n.id && (
-            <div style={{
-              position: 'absolute', top: '120%', left: '50%', transform: 'translateX(-50%)',
-              background: 'var(--text-main)', color: 'var(--card-bg)', padding: '10px 14px',
-              borderRadius: 6, fontSize: 11, lineHeight: 1.5, width: 190,
-              textAlign: 'left', zIndex: 20,
-            }}>
-              <div style={{ fontWeight: 600, marginBottom: 4 }}>{n.desc}</div>
-              <div style={{ color: 'var(--text-muted)', fontSize: 10 }}>{n.sub}</div>
-            </div>
-          )}
+    <div style={{ position: 'relative', width: '100%', height: 320, perspective: 1000 }} data-cursor="view" data-label="PLAY">
+      {/* Floating Design Elements */}
+      
+      {/* 1. Wireframe Card */}
+      <motion.div 
+        animate={{ y: [-10, 10, -10], rotateY: [-5, 5, -5] }} 
+        transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
+        onMouseEnter={() => setActive(1)} onMouseLeave={() => setActive(null)}
+        style={{ 
+          position: 'absolute', top: '10%', left: '5%', width: 220, height: 140,
+          background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 16,
+          boxShadow: active === 1 ? '0 20px 40px rgba(0,0,0,0.08)' : '0 10px 30px rgba(0,0,0,0.03)',
+          padding: 20, zIndex: active === 1 ? 10 : 2, transition: 'all 0.3s'
+        }}>
+        <div style={{ width: '60%', height: 12, background: 'var(--border)', borderRadius: 6, marginBottom: 16 }} />
+        <div style={{ width: '100%', height: 8, background: 'var(--border-dark)', borderRadius: 4, marginBottom: 8, opacity: 0.4 }} />
+        <div style={{ width: '80%', height: 8, background: 'var(--border-dark)', borderRadius: 4, marginBottom: 16, opacity: 0.4 }} />
+        <div style={{ width: 80, height: 28, background: 'var(--accent-transparent)', borderRadius: 8, border: '1px solid var(--accent)' }} />
+      </motion.div>
+
+      {/* 2. Color Palette Card */}
+      <motion.div 
+        animate={{ y: [10, -10, 10], rotateX: [5, -5, 5] }} 
+        transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 1 }}
+        onMouseEnter={() => setActive(2)} onMouseLeave={() => setActive(null)}
+        style={{ 
+          position: 'absolute', top: '45%', right: '5%', width: 180, height: 180,
+          background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 24,
+          boxShadow: active === 2 ? '0 20px 40px rgba(0,0,0,0.08)' : '0 10px 30px rgba(0,0,0,0.03)',
+          padding: 20, zIndex: active === 2 ? 10 : 3, transition: 'all 0.3s',
+          display: 'flex', flexDirection: 'column', gap: 12
+        }}>
+        <div style={{ flex: 1, background: 'var(--accent)', borderRadius: 12 }} />
+        <div style={{ display: 'flex', gap: 8, height: 40 }}>
+           <div style={{ flex: 1, background: 'var(--text-main)', borderRadius: 8 }} />
+           <div style={{ flex: 1, background: 'var(--border-dark)', borderRadius: 8 }} />
         </div>
-      ))}
-      <div style={{ position: 'absolute', bottom: 0, right: 0 }}>
-        <div style={{ fontSize: 9, letterSpacing: '0.1em', color: 'var(--text-light)', textTransform: 'uppercase' }}>
-          Hover to explore
-        </div>
-      </div>
+      </motion.div>
+
+      {/* 3. Typography Card */}
+      <motion.div 
+        animate={{ y: [-5, 5, -5], x: [-5, 5, -5] }} 
+        transition={{ repeat: Infinity, duration: 7, ease: 'easeInOut', delay: 2 }}
+        onMouseEnter={() => setActive(3)} onMouseLeave={() => setActive(null)}
+        style={{ 
+          position: 'absolute', bottom: '0%', left: '20%', width: 240, height: 120,
+          background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 16,
+          boxShadow: active === 3 ? '0 20px 40px rgba(0,0,0,0.08)' : '0 10px 30px rgba(0,0,0,0.03)',
+          padding: 24, zIndex: active === 3 ? 10 : 4, transition: 'all 0.3s',
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>
+        <div style={{ fontSize: 48, fontWeight: 700, fontFamily: 'serif', color: 'var(--text-main)', letterSpacing: '-0.05em' }}>Aa</div>
+      </motion.div>
     </div>
   )
 }
+
+
 
 /* ─── Hero ─── */
 function Hero() {
@@ -285,96 +283,64 @@ function Hero() {
 
   return (
     <motion.section id="hero" style={{ minHeight: '100vh', padding: '130px 48px 80px', display: 'flex', alignItems: 'center' }} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-10%" }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', width: '100%', display: 'grid', gridTemplateColumns: '1fr 420px', gap: 80, alignItems: 'center' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', width: '100%', display: 'grid', gridTemplateColumns: '1fr 480px', gap: 80, alignItems: 'center' }}>
 
         {/* Left */}
         <div>
-          <div style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 600, marginBottom: 28 }}>
-            Portfolio — 2026
+          <div style={{ fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 700, marginBottom: 28 }}>
+            Product Designer
           </div>
           <h1 style={{
             fontSize: 'clamp(44px,5.5vw,82px)', lineHeight: 1.04, letterSpacing: '-0.03em',
-            fontWeight: 600, marginBottom: 28, maxWidth: 600,
+            fontWeight: 700, marginBottom: 28, maxWidth: 640, color: 'var(--text-main)'
           }}>
-            I build things that turn{' '}
-            <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>problems</span>{' '}
-            into{' '}
-            <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>products.</span>
+            Designing interfaces that feel completely{' '}
+            <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>effortless.</span>
           </h1>
 
-          <div style={{ display: 'flex', gap: 8, marginBottom: 28, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 32, flexWrap: 'wrap' }}>
             {[
-              { tag: 'AI / ML', active: true },
-              { tag: 'DATA', active: false },
-              { tag: 'SOFTWARE', active: false },
+              { tag: 'UI / UX DESIGN', active: true },
+              { tag: 'PROTOTYPING', active: false },
+              { tag: 'DESIGN SYSTEMS', active: false },
             ].map(t => (
               <span key={t.tag} style={{
-                fontSize: 11, letterSpacing: '0.1em', fontWeight: 600, padding: '5px 12px',
-                borderRadius: 4,
-                border: `1.5px solid ${t.active ? 'var(--accent)' : 'var(--border)'}`,
+                fontSize: 11, letterSpacing: '0.12em', fontWeight: 600, padding: '6px 14px',
+                borderRadius: 100,
+                border: `1px solid ${t.active ? 'var(--accent)' : 'var(--border)'}`,
                 color: t.active ? 'var(--accent)' : 'var(--text-muted)',
-                background: t.active ? '#3157E808' : 'transparent',
+                background: t.active ? 'var(--accent-transparent)' : 'var(--bg-main)',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.02)'
               }}>{t.tag}</span>
             ))}
           </div>
 
-          <p style={{ fontSize: 17, color: 'var(--text-secondary)', lineHeight: 1.68, maxWidth: 480, marginBottom: 48 }}>
-            I&apos;m Yatin — an Information Technology student exploring AI/ML, data science and software development through real projects, experiments and constant iteration.
+          <p style={{ fontSize: 18, color: 'var(--text-secondary)', lineHeight: 1.68, maxWidth: 500, marginBottom: 48 }}>
+            I&apos;m Yatin — a digital designer obsessed with building clean, intuitive, and highly functional user experiences. 
           </p>
 
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <a href="#work"
+          <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+            <a href="#work" data-cursor="view" data-label="WORK"
               onMouseEnter={() => setBtnHover('work')}
-              onMouseLeave={() => setBtnHover(null)}
+              onMouseLeave={() => setBtnHover(null)} 
               style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                background: btnHover === 'work' ? 'var(--accent)' : 'var(--text-main)',
-                color: 'var(--card-bg)', padding: '13px 26px',
-                borderRadius: 6, fontSize: 14, fontWeight: 500, textDecoration: 'none',
-                transition: 'background 0.2s, transform 0.15s',
-                transform: btnHover === 'work' ? 'translateY(-1px)' : 'none',
+                background: 'var(--text-main)', color: 'var(--bg-main)', padding: '16px 32px',
+                borderRadius: 100, fontSize: 14, fontWeight: 600, textDecoration: 'none',
+                display: 'inline-flex', alignItems: 'center', gap: 8, transition: 'transform 0.2s',
+                transform: btnHover === 'work' ? 'scale(1.02)' : 'none'
               }}>
-              Explore my work
-              <span style={{ display: 'inline-block', transition: 'transform 0.2s', transform: btnHover === 'work' ? 'translateY(2px)' : 'none' }}>↓</span>
+              View Work
             </a>
-            <a href="#about"
-              onMouseEnter={() => setBtnHover('about')}
-              onMouseLeave={() => setBtnHover(null)}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                border: `1.5px solid ${btnHover === 'about' ? 'var(--accent)' : 'var(--border-dark)'}`,
-                color: btnHover === 'about' ? 'var(--accent)' : 'var(--text-main)',
-                padding: '13px 26px', borderRadius: 6, fontSize: 14, fontWeight: 500,
-                textDecoration: 'none', transition: 'all 0.2s',
-              }}>
-              About me
-              <span style={{ display: 'inline-block', transition: 'transform 0.2s', transform: btnHover === 'about' ? 'translate(2px,-2px)' : 'none' }}>↗</span>
+            <a href="#about" style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-main)', textDecoration: 'none' }} className="link-underline">
+              About Me
             </a>
           </div>
         </div>
 
-        {/* Right panel */}
+        {/* Right */}
         <div className="hidden lg:block">
-          <div style={{
-            background: 'var(--bg-alt)', border: '1px solid #E0E0DA', borderRadius: 14,
-            padding: '32px 28px', position: 'relative',
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
-              <div>
-                <div style={{ fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 4 }}>Currently building</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-main)' }}>AI / Data / Software</div>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <div style={{ width: 1, height: 32, background: 'var(--accent)', borderRadius: 1 }} />
-                <div style={{ fontSize: 10, color: 'var(--accent)', fontWeight: 600, letterSpacing: '0.08em' }}>
-                  Selected<br />experiments
-                </div>
-              </div>
-            </div>
-            <HeroDiagram />
-          </div>
+          <HeroDiagram />
         </div>
-
       </div>
     </motion.section>
   )
