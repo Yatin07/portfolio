@@ -651,7 +651,7 @@ function About() {
             border: '1px solid #E0E0DA', padding: '12px 18px', borderRadius: 8,
           }}>
             <div style={{ fontSize: 10, letterSpacing: '0.1em', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: 3 }}>Yatin Patil / 2026</div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-main)' }}>Navi Mumbai, India</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-main)' }}>IT Student</div>
           </div>
         </div>
         <div>
