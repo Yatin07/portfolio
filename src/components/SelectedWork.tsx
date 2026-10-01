@@ -13,12 +13,11 @@ export function SelectedWork() {
       role: 'Product Designer',
       problem: 'AI results were too technical for everyday users.',
       decision: 'Designed a friendly, human-readable slider interface instead of raw JSON output.',
-      outcome: '[ADD REAL DETAIL]',
       Prototype: () => {
          const [val, setVal] = useState(50)
          return (
-           <div style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)' }}>
-             <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16 }}>Confidence Slider</div>
+           <div data-testid="face-slider" style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)' }}>
+             <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16 }}>Confidence Slider <span style={{fontSize: 10, color: 'var(--text-muted)'}}>(Sample data)</span></div>
              <input type="range" min="0" max="100" value={val} onChange={e=>setVal(parseInt(e.target.value))} style={{ width: '100%', accentColor: 'var(--accent)' }} />
              <div style={{ marginTop: 16, fontSize: 32, fontWeight: 700, color: val > 75 ? 'var(--accent)' : 'var(--text-main)' }}>{val}% Match</div>
            </div>
@@ -30,13 +29,12 @@ export function SelectedWork() {
       role: 'UX Designer',
       problem: 'Users could not verify where the AI got its answers.',
       decision: 'Created a dual-pane view highlighting source snippets alongside answers.',
-      outcome: '[ADD REAL DETAIL]',
       Prototype: () => {
          const [open, setOpen] = useState(false)
          return (
-           <div style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)', cursor: 'pointer' }} onClick={() => setOpen(!open)}>
+           <div data-testid="face-slider" style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)', cursor: 'pointer' }} onClick={() => setOpen(!open)}>
              <div style={{ fontSize: 16, fontWeight: 600, display: 'flex', justifyContent: 'space-between' }}>
-               Where is the data stored? <span>{open ? '-' : '+'}</span>
+               Where is the data stored? <span style={{fontSize: 10, color: 'var(--text-muted)', marginRight: 8}}>(Sample data)</span><span>{open ? '-' : '+'}</span>
              </div>
              {open && <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} style={{ marginTop: 16, padding: 12, background: 'var(--accent-transparent)', borderRadius: 8, fontSize: 14 }}>
                <strong style={{ color: 'var(--accent)' }}>Source highlight:</strong> Section 4.2 states data is stored locally.
@@ -50,13 +48,12 @@ export function SelectedWork() {
       role: 'UI/UX Designer & Dev',
       problem: 'Reporting issues was chaotic and untracked.',
       decision: 'A simple Kanban-style swipe interface for students and wardens.',
-      outcome: '[ADD REAL DETAIL]',
       Prototype: () => {
          const [status, setStatus] = useState(0)
          const states = ['Open', 'In Progress', 'Resolved']
          return (
-           <div style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)', cursor: 'pointer' }} onClick={() => setStatus((status+1)%3)}>
-             <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16 }}>Issue: AC not working</div>
+           <div data-testid="face-slider" style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)', cursor: 'pointer' }} onClick={() => setStatus((status+1)%3)}>
+             <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16 }}>Issue: AC not working <span style={{fontSize: 10, color: 'var(--text-muted)'}}>(Sample data)</span></div>
              <div style={{ display: 'flex', gap: 8 }}>
                {states.map((s, i) => (
                  <div key={s} style={{ flex: 1, height: 4, background: i <= status ? 'var(--accent)' : 'var(--border)', borderRadius: 2 }} />
@@ -83,9 +80,7 @@ export function SelectedWork() {
                     <div><strong style={{ display: 'block', fontSize: 12, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Role</strong> {p.role}</div>
                     <div><strong style={{ display: 'block', fontSize: 12, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Problem</strong> {p.problem}</div>
                     <div><strong style={{ display: 'block', fontSize: 12, color: 'var(--accent)', textTransform: 'uppercase' }}>Decision</strong> {p.decision}</div>
-                    <div><strong style={{ display: 'block', fontSize: 12, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Outcome</strong> {p.outcome}</div>
                   </div>
-                  <a href="#" style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-main)', borderBottom: '1px solid var(--text-main)', paddingBottom: 4, textDecoration: 'none' }}>Read Case Study</a>
                 </div>
                 <div style={{ background: 'var(--card-bg)', padding: 48, borderRadius: 32, border: '1px solid var(--border)', boxShadow: '0 40px 80px rgba(0,0,0,0.05)' }}>
                   <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 24, textAlign: 'center' }}>Interactive Prototype</p>

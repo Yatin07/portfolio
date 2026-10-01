@@ -59,6 +59,7 @@ export default function Portfolio() {
 
       {/* Custom Cursor */}
       <motion.div
+        data-testid="custom-cursor"
         style={{
           position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 9999,
           x: cursorPos.x, y: cursorPos.y, translateX: '-50%', translateY: '-50%',
