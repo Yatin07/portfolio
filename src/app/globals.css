@@ -1,145 +1,64 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import 'tailwindcss';
 
-@theme {
-  --color-ivory: #F8F8F5;
-  --color-ivory-2: #F1F1ED;
-  --color-ivory-3: #ECECE7;
-  --color-charcoal: #171717;
-  --color-muted: #666666;
-  --color-border: #E0E0DA;
-  --color-blue: #3157E8;
-  --color-blue-hover: #2446CC;
+:root {
+  --bg-main: #F8F8F5;
+  --bg-alt: #F1F1ED;
+  --card-bg: #FFFFFF;
+  --bg-nav: rgba(248, 248, 245, 0.94);
+  --bg-hover: #EAEAE5;
+  
+  --border: #E0E0DA;
+  --border-dark: #C4C4BC;
+  
+  --text-main: #171717;
+  --text-secondary: #444444;
+  --text-muted: #666666;
+  --text-light: #AAAAAA;
+  
+  --accent: #3157E8;
+  --accent-transparent: rgba(49, 87, 232, 0.15);
 }
 
-* {
-  box-sizing: border-box;
+[data-theme='dark'] {
+  --bg-main: #0a0a0a;
+  --bg-alt: #141414;
+  --card-bg: #1c1c1c;
+  --bg-nav: rgba(10, 10, 10, 0.94);
+  --bg-hover: #262626;
+  
+  --border: #2e2e2e;
+  --border-dark: #444444;
+  
+  --text-main: #f5f5f5;
+  --text-secondary: #d4d4d4;
+  --text-muted: #a3a3a3;
+  --text-light: #737373;
+  
+  --accent: #4e72f9;
+  --accent-transparent: rgba(78, 114, 249, 0.2);
 }
 
-html {
-  scroll-behavior: smooth;
-}
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; background-color: var(--bg-main); }
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #F8F8F5;
-  color: #171717;
+  background-color: var(--bg-main);
+  color: var(--text-main);
   -webkit-font-smoothing: antialiased;
   cursor: none;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Hide scrollbar but keep functionality */
-::-webkit-scrollbar {
-  width: 0;
-}
+::-webkit-scrollbar { width: 0; }
 
-/* Custom cursor */
-.cursor-dot {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background: #171717;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transition: width 0.2s, height 0.2s, background 0.2s;
-  transform: translate(-50%, -50%);
-}
+.text-display { font-size: clamp(48px, 6vw, 88px); line-height: 1.04; letter-spacing: -0.03em; font-weight: 600; }
+.text-h1 { font-size: clamp(36px, 4vw, 64px); line-height: 1.08; letter-spacing: -0.025em; font-weight: 600; }
+.text-h2 { font-size: clamp(28px, 3vw, 48px); line-height: 1.12; letter-spacing: -0.02em; font-weight: 600; }
+.text-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 
-.cursor-ring {
-  position: fixed;
-  width: 32px;
-  height: 32px;
-  border: 1.5px solid #171717;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transition: width 0.3s, height 0.3s, border-color 0.2s;
-  transform: translate(-50%, -50%);
-}
-
-.cursor-ring.cursor-view {
-  width: 64px;
-  height: 64px;
-  border-color: #3157E8;
-  background: #3157E8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Typography utilities */
-.text-display {
-  font-size: clamp(48px, 6vw, 88px);
-  line-height: 1.04;
-  letter-spacing: -0.03em;
-  font-weight: 600;
-}
-
-.text-h1 {
-  font-size: clamp(36px, 4vw, 64px);
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  font-weight: 600;
-}
-
-.text-h2 {
-  font-size: clamp(28px, 3vw, 48px);
-  line-height: 1.12;
-  letter-spacing: -0.02em;
-  font-weight: 600;
-}
-
-.text-label {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-/* Underline grow animation */
-.link-underline {
-  position: relative;
-  text-decoration: none;
-}
-
-.link-underline::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: currentColor;
-  transition: width 0.25s ease;
-}
-
-.link-underline:hover::after {
-  width: 100%;
-}
-
-/* Section reveal animation */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.reveal {
-  animation: fadeUp 0.6s ease forwards;
-}
-
-/* Line draw animation */
-@keyframes drawLine {
-  from { stroke-dashoffset: 200; }
-  to { stroke-dashoffset: 0; }
-}
-
-.draw-line {
-  animation: drawLine 1s ease forwards;
-}
+.link-underline { position: relative; text-decoration: none; }
+.link-underline::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: currentColor; transition: width 0.25s ease; }
+.link-underline:hover::after { width: 100%; }
