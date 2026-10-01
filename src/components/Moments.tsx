@@ -2,11 +2,21 @@
 import { motion, useMotionValue, useTransform } from 'framer-motion'
 import { useState } from 'react'
 
+import { claims } from '../data/claims'
+
 export function Moments() {
-  const [cards, setCards] = useState([
-    { id: 1, title: 'Hackathon Winner', desc: 'Built a sustainable energy tracker in 24 hours.', year: '2025', color: '#ffb3ba' },
-    { id: 2, title: 'UX Design Internship', desc: 'Redesigned the core onboarding flow, increasing conversion by 14%.', year: '2024', color: '#bae1ff' },
-    { id: 3, title: 'Google UX Certificate', desc: 'Mastered the foundations of user-centered design.', year: '2023', color: '#baffc9' },
+  const verifiedCards = claims
+    .filter(c => c.status === 'verified')
+    .map((c, i) => ({
+      id: c.id,
+      title: c.title || 'Achievement',
+      desc: c.text,
+      year: c.year || '2024',
+      color: ['#ffb3ba', '#bae1ff', '#baffc9'][i % 3]
+    }))
+
+  const [cards, setCards] = useState(verifiedCards.length > 0 ? verifiedCards : [
+    { id: 'empty', title: 'Loading...', desc: 'Fetching moments...', year: '2024', color: '#eeeeee' }
   ])
 
   const moveCard = () => {
