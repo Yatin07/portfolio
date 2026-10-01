@@ -22,9 +22,9 @@ export function Hero() {
         }}>
           Designing interfaces that feel completely{' '}
           <motion.span 
-            whileHover={{ scale: 1.05, letterSpacing: '0.02em' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 10 }}
-            style={{ color: 'var(--accent)', fontStyle: 'italic', display: 'inline-block', cursor: 'none' }}
+            whileHover={{ scale: 1.05, rotate: -2, textShadow: '0 10px 30px var(--accent-transparent)' }}
+            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+            style={{ color: 'var(--accent)', fontStyle: 'italic', display: 'inline-block', cursor: 'none', transformOrigin: 'center' }}
             data-cursor="view" data-label="EFFORTLESS"
           >
             effortless.
