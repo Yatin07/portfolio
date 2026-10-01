@@ -48,7 +48,9 @@ function CustomCursor() {
       <motion.div style={{
         position: 'fixed', left: cursorXSpring, top: cursorYSpring, pointerEvents: 'none', zIndex: 9998, x: '-50%', y: '-50%',
         borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: mode === 'view' ? 'var(--accent)' : 'transparent',
+        background: mode === 'view' ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
+        backdropFilter: 'blur(4px)',
+        boxShadow: mode === 'view' ? '0 0 30px var(--accent-transparent)' : 'none',
         border: mode === 'view' ? 'none' : '1.5px solid var(--border)',
         boxShadow: mode === 'view' ? '0 0 20px var(--accent-transparent)' : 'none',
         backdropFilter: mode === 'view' ? 'none' : 'blur(2px)'
@@ -142,7 +144,7 @@ function Nav() {
       padding: scrolled ? '12px 48px' : '22px 48px',
       background: scrolled ? 'var(--bg-nav)' : 'transparent',
       backdropFilter: scrolled ? 'blur(16px)' : 'none',
-      borderBottom: scrolled ? '1px solid #E0E0DA' : '1px solid transparent',
+      borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
       transition: 'all 0.35s ease',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     }}>
@@ -176,7 +178,7 @@ function Nav() {
         </div>
         <a href="#contact" className="hidden md:block" style={{
           fontSize: 13, color: 'var(--accent)', fontWeight: 600, textDecoration: 'none',
-          border: '1.5px solid #3157E820', padding: '6px 14px', borderRadius: 5,
+          border: '1.5px solid var(--accent-transparent)', padding: '6px 14px', borderRadius: 5,
           transition: 'border-color 0.2s',
         }}>
           Contact ↗
@@ -185,7 +187,7 @@ function Nav() {
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
         }} style={{ background: 'transparent', border: '1.5px solid var(--border)', borderRadius: '50%', width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', cursor: 'none', marginLeft: 16 }}>
-            <span className='dark-icon' style={{ fontSize: 14 }}>🌓</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         </button>
         <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden"
           style={{ background: 'none', border: 'none', fontSize: 22, cursor: 'none', color: 'var(--text-main)', lineHeight: 1 }}>
@@ -881,132 +883,132 @@ function HowIWork() {
   )
 }
 
-/* ─── Beyond Code ─── */
+
+interface BentoCardProps { title: string; desc: string; icon?: string; colSpan?: string; rowSpan?: string; children?: React.ReactNode; }
+function BentoCard({ title, desc, icon, colSpan, rowSpan, children }: BentoCardProps) {
+  return (
+    <motion.div
+      whileHover={{ y: -5, scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      data-cursor="view"
+      data-label="EXPLORE"
+      style={{
+        gridColumn: colSpan,
+        gridRow: rowSpan,
+        background: 'var(--card-bg)',
+        borderRadius: 24,
+        padding: 32,
+        border: '1px solid var(--border)',
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
+      }}
+    >
+      <div style={{ position: 'relative', zIndex: 2 }}>
+        <div style={{ fontSize: 32, marginBottom: 16 }}>{icon}</div>
+        <h3 style={{ fontSize: 20, fontWeight: 600, color: 'var(--text-main)', marginBottom: 8 }}>{title}</h3>
+        <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6 }}>{desc}</p>
+      </div>
+      {children && (
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1 }}>
+          {children}
+        </div>
+      )}
+    </motion.div>
+  )
+}
+
+
+/* ─── Beyond Code (Floating Node Interactive) ─── */
 function BeyondCode() {
-  const [hovered, setHovered] = useState<string | null>(null)
-  const items = [
-    { label: 'Gym', emoji: '🏋️', desc: 'Consistency outside the screen matters too. Showing up every day — whether it\'s for a PR or a pull request.' },
-    { label: 'Chess', emoji: '♟', desc: 'Planning several moves ahead. Patience, pattern recognition, and knowing when to sacrifice.' },
-    { label: 'Music', emoji: '🎵', desc: 'A completely different way of thinking. Structure hidden inside something that feels effortless.' },
-    { label: 'Technology', emoji: '⚡', desc: 'The intersection of things that don\'t obviously belong together. Always exploring something new.' },
-    { label: 'Problem Solving', emoji: '◎', desc: 'The habit that crosses every context. Not just in code — in every decision.' },
-  ]
+  const nodes = [
+    { label: 'Gym', x: 20, y: 30, delay: 0 },
+    { label: 'Chess', x: 75, y: 20, delay: 0.2 },
+    { label: 'Music', x: 80, y: 70, delay: 0.4 },
+    { label: 'Tech', x: 25, y: 75, delay: 0.1 },
+    { label: 'UX', x: 50, y: 50, delay: 0.3 }
+  ];
 
   return (
-    <motion.section id="beyond-code" style={{ padding: '100px 48px', borderTop: '1px solid #E0E0DA', background: 'var(--bg-main)' }} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-10%" }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-
-        {/* Header row */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'flex-end', marginBottom: 72 }}>
-          <div>
-            <div style={{ fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 16 }}>Beyond Code</div>
-            <h2 style={{ fontSize: 'clamp(32px,4vw,56px)', fontWeight: 700, letterSpacing: '-0.025em', lineHeight: 1.08, color: 'var(--text-main)' }}>
-              The person<br />behind the projects.
-            </h2>
-          </div>
-          <p style={{ fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: 380 }}>
-            Good engineers are curious about more than engineering. Here&apos;s what keeps me thinking when I&apos;m away from the screen.
+    <motion.section id="beyond-code" style={{ padding: '120px 48px', borderTop: '1px solid var(--border)', background: 'var(--bg-alt)' }} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-10%" }} transition={{ duration: 0.7 }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        
+        <div style={{ textAlign: 'center', marginBottom: 60 }}>
+          <div style={{ fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 700, marginBottom: 16 }}>Beyond Code</div>
+          <h2 style={{ fontSize: 'clamp(36px,5vw,64px)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.1, color: 'var(--text-main)', marginBottom: 24 }}>
+            The person behind the projects.
+          </h2>
+          <p style={{ fontSize: 18, color: 'var(--text-muted)', maxWidth: 600, margin: '0 auto' }}>
+            Creative UI/UX requires drawing inspiration from everywhere. Here is what keeps my mind sharp when I step away from the screen.
           </p>
         </div>
 
-        {/* Main layout: photo + interests */}
-        <div style={{ display: 'grid', gridTemplateColumns: '380px 1fr', gap: 64, alignItems: 'start' }}>
+        {/* Constellation Widget (Like 21st.dev) */}
+        <div style={{
+          position: 'relative', width: '100%', maxWidth: 700, height: 400,
+          background: 'var(--bg-main)', border: '1px solid var(--border)',
+          borderRadius: 24, overflow: 'hidden',
+          boxShadow: 'inset 0 0 40px rgba(0,0,0,0.02)'
+        }} data-cursor="view" data-label="EXPLORE">
+          
+          {/* Subtle dotted background */}
+          <div style={{
+            position: 'absolute', inset: 0, opacity: 0.1,
+            backgroundImage: 'radial-gradient(var(--text-main) 1px, transparent 1px)',
+            backgroundSize: '24px 24px'
+          }} />
 
-          {/* Photo card */}
-          <div style={{ position: 'relative' }}>
-            <div style={{
-              borderRadius: 14, overflow: 'hidden', border: '1px solid #E0E0DA',
-              aspectRatio: '3/4', background: 'var(--border)',
-            }}>
-              <img
-                src="/src/assets/yatin.jpg"
-                alt="Yatin Patil"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
-              />
-            </div>
-            {/* Floating badge */}
-            <div style={{
-              position: 'absolute', bottom: 20, left: 20, right: 20,
-              background: 'rgba(248,248,245,0.92)', backdropFilter: 'blur(12px)',
-              border: '1px solid #E0E0DA', borderRadius: 10, padding: '14px 18px',
-            }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-main)', marginBottom: 2 }}>Yatin Patil</div>
-              <div style={{ fontSize: 11, color: 'var(--accent)', fontWeight: 600, letterSpacing: '0.06em' }}>
-                IT Student · Navi Mumbai, 2026
-              </div>
-            </div>
+          {/* Connection Lines (SVGs) */}
+          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.2 }}>
+            <line x1="20%" y1="30%" x2="50%" y2="50%" stroke="var(--text-main)" strokeWidth="1" strokeDasharray="4 4" />
+            <line x1="75%" y1="20%" x2="50%" y2="50%" stroke="var(--text-main)" strokeWidth="1" strokeDasharray="4 4" />
+            <line x1="80%" y1="70%" x2="50%" y2="50%" stroke="var(--text-main)" strokeWidth="1" strokeDasharray="4 4" />
+            <line x1="25%" y1="75%" x2="50%" y2="50%" stroke="var(--text-main)" strokeWidth="1" strokeDasharray="4 4" />
+          </svg>
+
+          {/* Floating Nodes */}
+          {nodes.map((node, i) => (
+            <motion.div
+              key={i}
+              animate={{ y: [-5, 5, -5], x: [-3, 3, -3] }}
+              transition={{ repeat: Infinity, duration: 4 + (i % 2), delay: node.delay, ease: 'easeInOut' }}
+              whileHover={{ scale: 1.1, backgroundColor: 'var(--card-bg)', borderColor: 'var(--accent)', color: 'var(--accent)' }}
+              style={{
+                position: 'absolute', left: `${node.x}%`, top: `${node.y}%`,
+                transform: 'translate(-50%, -50%)',
+                background: 'var(--bg-main)', border: '1px solid var(--border)',
+                padding: '12px 24px', borderRadius: 100,
+                fontSize: 14, fontWeight: 600, color: 'var(--text-main)',
+                cursor: 'none', transition: 'all 0.3s ease',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
+              }}
+            >
+              {node.label}
+            </motion.div>
+          ))}
+
+          {/* Photo profile tag at bottom left */}
+          <div style={{ position: 'absolute', bottom: 24, left: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
+             <img src="/src/assets/yatin.jpg" alt="Yatin" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} />
+             <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-main)' }}>Yatin Patil</div>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>IT Student, 2026</div>
+             </div>
           </div>
-
-          {/* Interest items */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 0, borderTop: '1px solid #E0E0DA' }}>
-            {items.map((item) => {
-              const isHovered = hovered === item.label
-              return (
-                <div
-                  key={item.label}
-                  onMouseEnter={() => setHovered(item.label)}
-                  onMouseLeave={() => setHovered(null)}
-                  style={{
-                    display: 'grid', gridTemplateColumns: '48px 1fr auto',
-                    alignItems: 'center', gap: 20, padding: '28px 20px',
-                    borderBottom: '1px solid #E0E0DA', cursor: 'none',
-                    background: isHovered ? 'var(--card-bg)' : 'transparent',
-                    borderRadius: isHovered ? 8 : 0,
-                    transition: 'background 0.2s',
-                  }}
-                >
-                  {/* Emoji / number */}
-                  <div style={{
-                    width: 44, height: 44, borderRadius: 10, display: 'flex',
-                    alignItems: 'center', justifyContent: 'center', fontSize: 20,
-                    background: isHovered ? '#3157E808' : 'var(--bg-alt)',
-                    border: `1.5px solid ${isHovered ? '#3157E840' : 'var(--border)'}`,
-                    transition: 'all 0.2s',
-                  }}>
-                    {item.emoji}
-                  </div>
-
-                  {/* Label + desc */}
-                  <div>
-                    <div style={{
-                      fontSize: 18, fontWeight: 700, letterSpacing: '-0.01em',
-                      color: isHovered ? 'var(--accent)' : 'var(--text-main)',
-                      transition: 'color 0.2s', marginBottom: isHovered ? 6 : 0,
-                    }}>
-                      {item.label}
-                    </div>
-                    <div style={{
-                      fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6,
-                      maxHeight: isHovered ? 80 : 0, overflow: 'hidden',
-                      opacity: isHovered ? 1 : 0, transition: 'max-height 0.3s ease, opacity 0.25s',
-                    }}>
-                      {item.desc}
-                    </div>
-                  </div>
-
-                  {/* Arrow indicator */}
-                  <div style={{
-                    fontSize: 18, color: isHovered ? 'var(--accent)' : 'var(--text-light)',
-                    transform: isHovered ? 'rotate(0deg)' : 'rotate(-45deg)',
-                    transition: 'color 0.2s, transform 0.25s',
-                  }}>
-                    →
-                  </div>
-                </div>
-              )
-            })}
-
-            {/* Closing note */}
-            <div style={{ padding: '28px 20px 0', fontSize: 13, color: 'var(--text-light)', fontStyle: 'italic' }}>
-              These aren&apos;t separate from the work — they inform it.
-            </div>
+          
+          {/* Subtle text at bottom right */}
+          <div style={{ position: 'absolute', bottom: 24, right: 24, fontSize: 10, letterSpacing: '0.1em', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+             Hover to explore
           </div>
         </div>
+
       </div>
     </motion.section>
   )
 }
-
 /* ─── Achievements ─── */
 function Achievements() {
   const items = [
