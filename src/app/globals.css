@@ -85,7 +85,9 @@ body {
 .link-underline:hover::after { width: 100%; }
 
 @media (max-width: 768px) {
-  [data-testid="custom-cursor"] {
+  [data-testid="custom-cursor"], .hide-on-mobile {
     display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
   }
 }
