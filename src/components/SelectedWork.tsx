@@ -18,7 +18,7 @@ export function SelectedWork() {
          return (
            <div data-testid="face-slider" style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)' }}>
              <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16 }}>Confidence Slider <span style={{fontSize: 10, color: 'var(--text-muted)'}}>(Sample data)</span></div>
-             <input type="range" min="0" max="100" value={val} onChange={e=>setVal(parseInt(e.target.value))} style={{ width: '100%', accentColor: 'var(--accent)' }} />
+             <input aria-label="Confidence Slider" type="range" min="0" max="100" value={val} onChange={e=>setVal(parseInt(e.target.value))} style={{ width: '100%', accentColor: 'var(--accent)' }} />
              <div style={{ marginTop: 16, fontSize: 32, fontWeight: 700, color: val > 75 ? 'var(--accent)' : 'var(--text-main)' }}>{val}% Match</div>
            </div>
          )
@@ -32,7 +32,7 @@ export function SelectedWork() {
       Prototype: () => {
          const [open, setOpen] = useState(false)
          return (
-           <div data-testid="face-slider" style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)', cursor: 'pointer' }} onClick={() => setOpen(!open)}>
+           <div data-testid="doc-qa-question-0" style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)', cursor: 'pointer' }} onClick={() => setOpen(!open)}>
              <div style={{ fontSize: 16, fontWeight: 600, display: 'flex', justifyContent: 'space-between' }}>
                Where is the data stored? <span style={{fontSize: 10, color: 'var(--text-muted)', marginRight: 8}}>(Sample data)</span><span>{open ? '-' : '+'}</span>
              </div>
@@ -52,7 +52,7 @@ export function SelectedWork() {
          const [status, setStatus] = useState(0)
          const states = ['Open', 'In Progress', 'Resolved']
          return (
-           <div data-testid="face-slider" style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)', cursor: 'pointer' }} onClick={() => setStatus((status+1)%3)}>
+           <div data-testid="hostel-complaint-0" style={{ padding: 24, background: 'var(--bg-main)', borderRadius: 16, border: '1px solid var(--border)', cursor: 'pointer' }} onClick={() => setStatus((status+1)%3)}>
              <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16 }}>Issue: AC not working <span style={{fontSize: 10, color: 'var(--text-muted)'}}>(Sample data)</span></div>
              <div style={{ display: 'flex', gap: 8 }}>
                {states.map((s, i) => (

@@ -36,17 +36,7 @@ export default function Portfolio() {
     return () => window.removeEventListener('mousemove', onMouseMove)
   }, [])
 
-  // Easter egg: T for Theme
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === 't') {
-        const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
-        document.documentElement.setAttribute('data-theme', newTheme)
-      }
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [])
+
 
   return (
     <div style={{ background: 'var(--bg-main)', color: 'var(--text-main)', minHeight: '100vh' }}>

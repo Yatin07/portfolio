@@ -22,6 +22,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.addEventListener('keydown', function(e) {
+              if (e.key.toLowerCase() === 't') {
+                var newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+              }
+            });
+          `
+        }} />
         {children}
       </body>
     </html>
