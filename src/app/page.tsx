@@ -49,11 +49,11 @@ function CustomCursor() {
         position: 'fixed', left: cursorXSpring, top: cursorYSpring, pointerEvents: 'none', zIndex: 9998, x: '-50%', y: '-50%',
         borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
         background: mode === 'view' ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
-        backdropFilter: 'blur(4px)',
+        
         boxShadow: mode === 'view' ? '0 0 30px var(--accent-transparent)' : 'none',
         border: mode === 'view' ? 'none' : '1.5px solid var(--border)',
-        boxShadow: mode === 'view' ? '0 0 20px var(--accent-transparent)' : 'none',
-        backdropFilter: mode === 'view' ? 'none' : 'blur(2px)'
+        
+        backdropFilter: mode === 'view' ? 'none' : 'blur(4px)'
       }} animate={{
         width: mode === 'view' ? 72 : 36, height: mode === 'view' ? 72 : 36,
       }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
