@@ -7,6 +7,12 @@ import { Hero } from '../components/Hero'
 import { Process } from '../components/Process'
 import { SelectedWork } from '../components/SelectedWork'
 import { BeyondPixels } from '../components/BeyondPixels'
+import { About } from '../components/About'
+import { HowIWork } from '../components/HowIWork'
+import { Moments } from '../components/Moments'
+import { DesignLab } from '../components/DesignLab'
+import { Contact } from '../components/Contact'
+
 
 export default function Portfolio() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
@@ -78,15 +84,11 @@ export default function Portfolio() {
       <SelectedWork />
       <BeyondPixels />
       
-      {/* Contact Section placeholder */}
-      <section style={{ padding: '150px 48px', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
-        <h2 style={{ fontSize: 'clamp(48px, 6vw, 96px)', fontWeight: 700, letterSpacing: '-0.04em', marginBottom: 40 }}>
-          Have something <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>worth building?</span>
-        </h2>
-        <a href="mailto:yatin@example.com" data-cursor="view" data-label="EMAIL" style={{
-          padding: '20px 40px', background: 'var(--text-main)', color: 'var(--bg-main)', borderRadius: 100, fontSize: 18, fontWeight: 600, textDecoration: 'none', display: 'inline-block'
-        }}>Let's talk</a>
-      </section>
+      <About />
+      <HowIWork />
+      <Moments />
+      <DesignLab />
+      <Contact />
 
     </div>
   )
