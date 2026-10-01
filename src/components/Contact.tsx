@@ -16,7 +16,7 @@ export function Contact() {
       </p>
       
       <div style={{ display: 'flex', gap: 24, justifyContent: 'center', marginBottom: 80, flexWrap: 'wrap' }}>
-        <motion.a href="mailto:yatin.patil@example.com" data-cursor="view" data-label="EMAIL" 
+        <motion.a href="mailto:yatin@example.com" data-cursor="view" data-label="EMAIL" 
           onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
           whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
           style={{ padding: '20px 40px', background: 'var(--text-main)', color: 'var(--bg-main)', borderRadius: 100, fontSize: 18, fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 12 }}>

@@ -32,7 +32,7 @@ export function HowIWork() {
                  display: 'flex', flexDirection: 'column', gap: 24,
                  height: 300, transition: 'background 0.3s'
                }}>
-               <div style={{ fontSize: 14, fontWeight: 700, opacity: 0.5 }}>0{i+1}</div>
+               <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-light)' }}>0{i+1}</div>
                <h3 style={{ fontSize: 24, fontWeight: 600 }}>{step.title}</h3>
                <AnimatePresence>
                  {active === i && (

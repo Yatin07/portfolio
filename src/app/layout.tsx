@@ -26,8 +26,11 @@ export default function RootLayout({
           __html: `
             window.addEventListener('keydown', function(e) {
               if (e.key.toLowerCase() === 't') {
-                var newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', newTheme);
+                if (document.documentElement.getAttribute('data-theme') === 'dark') {
+                  document.documentElement.removeAttribute('data-theme');
+                } else {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                }
               }
             });
           `

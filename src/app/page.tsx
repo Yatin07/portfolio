@@ -42,9 +42,9 @@ export default function Portfolio() {
     <div style={{ background: 'var(--bg-main)', color: 'var(--text-main)', minHeight: '100vh' }}>
       
       {/* Sticky Nav */}
-      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, padding: '24px 48px', display: 'flex', justifyContent: 'space-between', zIndex: 100, mixBlendMode: 'difference' }}>
-         <div style={{ fontWeight: 700, fontSize: 14, letterSpacing: '0.1em', color: '#fff' }}>YATIN.</div>
-         <div style={{ fontSize: 12, fontWeight: 600, color: '#fff', opacity: 0.6 }}>Press 'T' for magic</div>
+      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, padding: '24px 48px', display: 'flex', justifyContent: 'space-between', zIndex: 100 }}>
+         <div style={{ fontWeight: 700, fontSize: 14, letterSpacing: '0.1em', color: 'var(--text-main)' }}>YATIN.</div>
+         <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>Press 'T' for magic</div>
       </nav>
 
       {/* Custom Cursor */}
