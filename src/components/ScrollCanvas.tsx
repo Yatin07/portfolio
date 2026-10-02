@@ -3,17 +3,14 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const TOTAL_FRAMES = 300
-const SKIP_START   = 110   // skip blink frames
-const SKIP_END     = 130   // exclusive — frames 110..130 are skipped
-const INTRO_END    = 150   // auto-play ends here
+const TOTAL_FRAMES = 240   // Extracted directly from 1080p original video
+const INTRO_END    = 120   // auto-play intro ends at frame 120 (~5s at 24fps)
 const FPS          = 24    // cinematic auto-play speed
 
-// Frames we actually play: 1..109, 131..150
+// Frames played during intro: 1..120
 function buildPlaylist(): number[] {
   const list: number[] = []
   for (let i = 1; i <= INTRO_END; i++) {
-    if (i >= SKIP_START && i <= SKIP_END) continue
     list.push(i)
   }
   return list
