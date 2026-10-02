@@ -73,15 +73,18 @@ export default function Portfolio() {
       </motion.div>
 
       <ScrollCanvas />
-      <Process />
-      <SelectedWork />
-      <BeyondPixels />
-      
-      <About />
-      <HowIWork />
-      <Moments />
-      <DesignLab />
-      <Contact />
+
+      {/* Page sections — sit naturally in document flow after the scroll animation */}
+      <div style={{ position: 'relative', zIndex: 20, background: 'var(--bg-main)' }}>
+        <Process />
+        <SelectedWork />
+        <BeyondPixels />
+        <About />
+        <HowIWork />
+        <Moments />
+        <DesignLab />
+        <Contact />
+      </div>
 
     </div>
   )
