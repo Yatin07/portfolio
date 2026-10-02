@@ -12,6 +12,7 @@ import { HowIWork } from '../components/HowIWork'
 import { Moments } from '../components/Moments'
 import { DesignLab } from '../components/DesignLab'
 import { Contact } from '../components/Contact'
+import { ScrollCanvas } from '../components/ScrollCanvas'
 
 
 export default function Portfolio() {
@@ -71,6 +72,7 @@ export default function Portfolio() {
         </motion.div>
       </motion.div>
 
+      <ScrollCanvas />
       <Hero />
       <Process />
       <SelectedWork />
