@@ -1,8 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const TOTAL_FRAMES = 300
@@ -20,7 +18,7 @@ function buildPlaylist(): number[] {
   }
   return list
 }
-const PLAYLIST = buildPlaylist() // ~131 frames to auto-play
+const PLAYLIST = buildPlaylist()
 
 function pad(n: number) { return String(n).padStart(3, '0') }
 function frameUrl(n: number) { return `/frames/ezgif-frame-${pad(n)}.jpg` }
@@ -35,23 +33,56 @@ export function ScrollCanvas() {
   const rafRef          = useRef<number>(0)
   const lastTimeRef     = useRef<number>(0)
   const playlistIdx     = useRef<number>(0)
-  const scrollRef       = useRef<HTMLDivElement>(null)
+  const containerRef    = useRef<HTMLDivElement>(null)
 
   const [phase, setPhase]             = useState<Phase>('loading')
   const [heroVisible, setHeroVisible] = useState(false)
-  const [scrollPct, setScrollPct]     = useState(0)    // 0-1 for frames 150-300
-  const [loadPct, setLoadPct]         = useState(0)    // preload progress
+  const [scrollPct, setScrollPct]     = useState(0)
+  const [loadPct, setLoadPct]         = useState(0)
 
-  // ── Canvas: size at full device pixel ratio ──────────────────────────────
+  // ── Draw a frame with sharp high-DPR scaling ──────────────────────────────
+  const draw = useCallback((n: number) => {
+    const canvas = canvasRef.current
+    const img    = images.current.get(n)
+    if (!canvas || !img) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const cw = canvas.width
+    const ch = canvas.height
+    const iw = img.naturalWidth || img.width
+    const ih = img.naturalHeight || img.height
+    if (!iw || !ih) return
+
+    const scale = Math.max(cw / iw, ch / ih)
+    const dw = iw * scale
+    const dh = ih * scale
+    const dx = (cw - dw) / 2
+    const dy = (ch - dh) / 2
+
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    ctx.clearRect(0, 0, cw, ch)
+    ctx.drawImage(img, dx, dy, dw, dh)
+  }, [])
+
+  // ── Resize canvas to device pixel ratio ───────────────────────────────────
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const dpr = window.devicePixelRatio || 1
-    canvas.width  = window.innerWidth  * dpr
-    canvas.height = window.innerHeight * dpr
-    canvas.style.width  = window.innerWidth  + 'px'
-    canvas.style.height = window.innerHeight + 'px'
-  }, [])
+    const dpr = Math.max(window.devicePixelRatio || 1, 1)
+    const w = window.innerWidth
+    const h = window.innerHeight
+
+    canvas.width  = Math.round(w * dpr)
+    canvas.height = Math.round(h * dpr)
+    canvas.style.width  = `${w}px`
+    canvas.style.height = `${h}px`
+
+    if (currentFrame.current) {
+      draw(currentFrame.current)
+    }
+  }, [draw])
 
   useEffect(() => {
     resizeCanvas()
@@ -59,26 +90,12 @@ export function ScrollCanvas() {
     return () => window.removeEventListener('resize', resizeCanvas)
   }, [resizeCanvas])
 
-  // ── Draw a frame ──────────────────────────────────────────────────────────
-  const draw = useCallback((n: number) => {
-    const canvas = canvasRef.current
-    const img    = images.current.get(n)
-    if (!canvas || !img) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    const dpr = window.devicePixelRatio || 1
-    const cw  = canvas.width            // already multiplied by dpr
-    const ch  = canvas.height
-    const iw  = img.naturalWidth
-    const ih  = img.naturalHeight
-    const scale = Math.max(cw / iw, ch / ih)
-    const dw = iw * scale
-    const dh = ih * scale
-    ctx.clearRect(0, 0, cw, ch)
-    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh)
-  }, [])
+  // Re-size and re-draw whenever phase changes to guarantee canvas dimensions
+  useEffect(() => {
+    resizeCanvas()
+  }, [phase, resizeCanvas])
 
-  // ── Preload all frames ────────────────────────────────────────────────────
+  // ── Preload frames ────────────────────────────────────────────────────────
   useEffect(() => {
     let done = 0
     const total = TOTAL_FRAMES
@@ -90,19 +107,20 @@ export function ScrollCanvas() {
         images.current.set(n, img)
         done++
         setLoadPct(done / total)
-        // Draw first frame as soon as it's ready
-        if (n === 1 && phase === 'loading') {
+
+        if (n === 1) {
           draw(1)
         }
-        // Start auto-play once first 15 frames are loaded
         if (done === 15) {
           setPhase('intro')
         }
       }
-      img.onerror = () => { done++; setLoadPct(done / total) }
+      img.onerror = () => {
+        done++
+        setLoadPct(done / total)
+      }
     }
 
-    // Prioritise playlist frames first
     PLAYLIST.forEach(loadOne)
     for (let n = INTRO_END + 1; n <= TOTAL_FRAMES; n++) loadOne(n)
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,7 +145,6 @@ export function ScrollCanvas() {
 
       const idx = playlistIdx.current
       if (idx >= PLAYLIST.length) {
-        // Done — show hero
         currentFrame.current = INTRO_END
         draw(INTRO_END)
         setPhase('hero')
@@ -135,7 +152,6 @@ export function ScrollCanvas() {
       }
 
       const frameNum = PLAYLIST[idx]
-      // If image not loaded yet, wait this tick
       if (!images.current.has(frameNum)) {
         rafRef.current = requestAnimationFrame(tick)
         return
@@ -159,9 +175,7 @@ export function ScrollCanvas() {
     if (phase !== 'hero') return
     document.body.style.overflow = 'hidden'
 
-    // Hero text fades in after 300ms
     const t1 = setTimeout(() => setHeroVisible(true), 300)
-    // Unlock scroll after 2.5s (user has read it)
     const t2 = setTimeout(() => {
       document.body.style.overflow = ''
       setPhase('scroll')
@@ -174,18 +188,19 @@ export function ScrollCanvas() {
     }
   }, [phase])
 
-  // ── SCROLL phase: frames 150→300 in background, UI scrolls over ──────────
+  // ── SCROLL phase: frames 150→300 ──────────────────────────────────────────
   useEffect(() => {
     if (phase !== 'scroll') return
 
     const onScroll = () => {
-      const el = scrollRef.current
-      if (!el) return
-      const rect     = el.getBoundingClientRect()
+      const container = containerRef.current
+      if (!container) return
+      const rect = container.getBoundingClientRect()
       const scrolled = -rect.top
-      const max      = el.clientHeight - window.innerHeight
-      if (max <= 0 || scrolled < 0) return
-      const pct = Math.min(scrolled / max, 1)
+      const maxScroll = container.clientHeight - window.innerHeight
+      if (maxScroll <= 0) return
+
+      const pct = Math.max(0, Math.min(scrolled / maxScroll, 1))
       setScrollPct(pct)
 
       const remaining = TOTAL_FRAMES - INTRO_END
@@ -205,175 +220,228 @@ export function ScrollCanvas() {
   }, [phase, draw])
 
   // ─────────────────────────────────────────────────────────────────────────
-  // RENDER
+  // RENDER: Single Canvas node maintained throughout all phase transitions
   // ─────────────────────────────────────────────────────────────────────────
 
-  const isFixed  = phase === 'loading' || phase === 'intro' || phase === 'hero'
-  const isScroll = phase === 'scroll'
+  const scrollTrackHeight = `${(TOTAL_FRAMES - INTRO_END) * 12 + 100}vh`
 
   return (
-    <>
-      {/* ═══════════════════════════════════════════════════════════════════
-          FIXED CANVAS (phases: loading, intro, hero)
-          ═══════════════════════════════════════════════════════════════════ */}
-      {isFixed && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 50, background: '#000',
-        }}>
-          <canvas ref={canvasRef} style={{ display: 'block' }} />
+    <div
+      ref={containerRef}
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: phase === 'scroll' ? scrollTrackHeight : '100vh',
+      }}
+    >
+      {/* Persistent Full-Screen Viewport Container */}
+      <div
+        style={{
+          position: phase === 'scroll' ? 'sticky' : 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: phase === 'scroll' ? 0 : 50,
+          background: '#000',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Single Canvas Element — Never Unmounts */}
+        <canvas
+          ref={canvasRef}
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
 
-          {/* Vignette */}
-          <div style={{
-            position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: 'radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(0,0,0,0.8) 100%)',
-          }} />
+        {/* Cinematic Vignette */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            pointerEvents: 'none',
+            background:
+              'radial-gradient(ellipse at 50% 40%, transparent 35%, rgba(0,0,0,0.85) 100%)',
+          }}
+        />
 
-          {/* Bottom gradient */}
-          <div style={{
-            position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%', pointerEvents: 'none',
-            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
-          }} />
+        {/* Bottom Ambient Dark Gradient */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '50%',
+            pointerEvents: 'none',
+            background:
+              'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)',
+          }}
+        />
 
-          {/* Loading progress bar */}
-          {phase === 'loading' && (
-            <div style={{
-              position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
-              background: 'rgba(255,255,255,0.08)',
-            }}>
-              <div style={{
-                height: '100%', background: 'var(--accent)',
-                width: `${loadPct * 100}%`, transition: 'width 0.1s linear',
-              }} />
-            </div>
-          )}
-
-          {/* Intro progress bar */}
-          {phase === 'intro' && (
-            <div style={{
-              position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
-              background: 'rgba(255,255,255,0.08)',
-            }}>
-              <div style={{
-                height: '100%', background: 'var(--accent)',
-                width: `${(playlistIdx.current / PLAYLIST.length) * 100}%`,
-                transition: 'width 0.05s linear',
-              }} />
-            </div>
-          )}
-
-          {/* ── HERO OVERLAY ── */}
+        {/* Loading Progress Bar */}
+        {phase === 'loading' && (
           <div
             style={{
-              position: 'absolute', inset: 0,
-              display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-              padding: '0 56px 72px',
-              opacity: heroVisible ? 1 : 0,
-              transition: 'opacity 0.9s ease',
-              pointerEvents: heroVisible ? 'all' : 'none',
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 2,
+              background: 'rgba(255,255,255,0.08)',
             }}
           >
-            {/* Role label */}
-            <div style={{
-              fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.45)', fontWeight: 700, marginBottom: 18,
+            <div
+              style={{
+                height: '100%',
+                background: 'var(--accent)',
+                width: `${loadPct * 100}%`,
+                transition: 'width 0.1s linear',
+              }}
+            />
+          </div>
+        )}
+
+        {/* Auto-Play Intro Progress Bar */}
+        {phase === 'intro' && (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 2,
+              background: 'rgba(255,255,255,0.08)',
+            }}
+          >
+            <div
+              style={{
+                height: '100%',
+                background: 'var(--accent)',
+                width: `${(playlistIdx.current / PLAYLIST.length) * 100}%`,
+                transition: 'width 0.05s linear',
+              }}
+            />
+          </div>
+        )}
+
+        {/* Scroll Progress Bar */}
+        {phase === 'scroll' && (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 2,
+              background: 'rgba(255,255,255,0.08)',
+            }}
+          >
+            <div
+              style={{
+                height: '100%',
+                background: 'var(--accent)',
+                width: `${scrollPct * 100}%`,
+                transition: 'width 0.04s linear',
+              }}
+            />
+          </div>
+        )}
+
+        {/* Hero Overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            padding: '0 56px 72px',
+            opacity: heroVisible ? 1 : 0,
+            transition: 'opacity 0.9s ease',
+            pointerEvents: heroVisible && phase !== 'scroll' ? 'all' : 'none',
+          }}
+        >
+          {/* Role label */}
+          <div
+            style={{
+              fontSize: 11,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.45)',
+              fontWeight: 700,
+              marginBottom: 18,
               transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
               transition: 'transform 0.9s ease 0.1s',
-            }}>
-              UI/UX Designer
-            </div>
+            }}
+          >
+            UI/UX Designer
+          </div>
 
-            {/* Headline */}
-            <h1 style={{
-              fontSize: 'clamp(36px, 5vw, 76px)', lineHeight: 1.06,
-              letterSpacing: '-0.04em', fontWeight: 700,
-              color: '#fff', maxWidth: 820, marginBottom: 22, margin: '0 0 22px',
+          {/* Headline */}
+          <h1
+            style={{
+              fontSize: 'clamp(36px, 5vw, 76px)',
+              lineHeight: 1.06,
+              letterSpacing: '-0.04em',
+              fontWeight: 700,
+              color: '#fff',
+              maxWidth: 820,
+              margin: '0 0 22px',
               transform: heroVisible ? 'translateY(0)' : 'translateY(24px)',
               transition: 'transform 0.9s ease 0.2s',
-            }}>
-              Designing interfaces that feel completely{' '}
-              <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>effortless.</span>
-            </h1>
+            }}
+          >
+            Designing interfaces that feel completely{' '}
+            <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>
+              effortless.
+            </span>
+          </h1>
 
-            {/* Subtext */}
-            <p style={{
-              fontSize: 17, color: 'rgba(255,255,255,0.55)',
-              marginBottom: 44, maxWidth: 500, lineHeight: 1.65,
+          {/* Subtext */}
+          <p
+            style={{
+              fontSize: 17,
+              color: 'rgba(255,255,255,0.55)',
+              marginBottom: 44,
+              maxWidth: 500,
+              lineHeight: 1.65,
               transform: heroVisible ? 'translateY(0)' : 'translateY(20px)',
               transition: 'transform 0.9s ease 0.3s',
-            }}>
-              I'm Yatin — crafting intuitive experiences for complex digital products.
-            </p>
+            }}
+          >
+            I'm Yatin — crafting intuitive experiences for complex digital products.
+          </p>
 
-            {/* Scroll hint */}
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 10,
+          {/* Scroll hint */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
               transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
               transition: 'transform 0.9s ease 0.45s',
-            }}>
-              <div style={{
-                fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.35)', fontWeight: 600,
-              }}>
-                Scroll to explore
-              </div>
-              <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.3)' }}>↓</div>
+            }}
+          >
+            <div
+              style={{
+                fontSize: 12,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.35)',
+                fontWeight: 600,
+              }}
+            >
+              Scroll to explore
             </div>
+            <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.3)' }}>↓</div>
           </div>
         </div>
-      )}
-
-      {/* Spacer so page has height during fixed phase */}
-      {isFixed && <div style={{ height: '100vh' }} />}
-
-      {/* ═══════════════════════════════════════════════════════════════════
-          SCROLL PHASE: sticky canvas behind, UI scrolls on top
-          ═══════════════════════════════════════════════════════════════════ */}
-      {isScroll && (
-        <div ref={scrollRef} style={{
-          // Scroll room: 150 remaining frames × generous scroll amount
-          height: `${(TOTAL_FRAMES - INTRO_END) * 12 + 100}vh`,
-          position: 'relative',
-        }}>
-          {/* Sticky canvas — stays behind everything */}
-          <div style={{
-            position: 'sticky', top: 0, height: '100vh',
-            overflow: 'hidden', zIndex: 0,
-          }}>
-            <canvas ref={canvasRef} style={{ display: 'block' }} />
-
-            {/* Same vignette */}
-            <div style={{
-              position: 'absolute', inset: 0, pointerEvents: 'none',
-              background: 'radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(0,0,0,0.8) 100%)',
-            }} />
-            <div style={{
-              position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%', pointerEvents: 'none',
-              background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
-            }} />
-
-            {/* Progress bar */}
-            <div style={{
-              position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
-              background: 'rgba(255,255,255,0.08)',
-            }}>
-              <div style={{
-                height: '100%', background: 'var(--accent)',
-                width: `${scrollPct * 100}%`, transition: 'width 0.04s linear',
-              }} />
-            </div>
-          </div>
-
-          {/* Page sections scroll on top (dark overlay fades in so sections are readable) */}
-          <div style={{
-            position: 'absolute',
-            // Start sections after ~80% of scroll frames complete
-            top: `${(TOTAL_FRAMES - INTRO_END) * 12 * 0.8}vh`,
-            left: 0, right: 0,
-            background: 'var(--bg-main)',
-            zIndex: 10,
-          }} id="sections-start" />
-        </div>
-      )}
-    </>
+      </div>
+    </div>
   )
 }
