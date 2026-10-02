@@ -30,7 +30,6 @@ export function ScrollCanvas() {
   const rafRef          = useRef<number>(0)
   const lastTimeRef     = useRef<number>(0)
   const playlistIdx     = useRef<number>(0)
-  const containerRef    = useRef<HTMLDivElement>(null)
 
   const [phase, setPhase]             = useState<Phase>('loading')
   const [heroVisible, setHeroVisible] = useState(false)
@@ -87,7 +86,6 @@ export function ScrollCanvas() {
     return () => window.removeEventListener('resize', resizeCanvas)
   }, [resizeCanvas])
 
-  // Re-size and re-draw whenever phase changes to guarantee canvas dimensions
   useEffect(() => {
     resizeCanvas()
   }, [phase, resizeCanvas])
@@ -123,7 +121,7 @@ export function ScrollCanvas() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // ── AUTO-PLAY: frames 1..109, 131..150 ───────────────────────────────────
+  // ── AUTO-PLAY: frames 1..120 ──────────────────────────────────────────────
   useEffect(() => {
     if (phase !== 'intro') return
 
@@ -167,16 +165,17 @@ export function ScrollCanvas() {
     }
   }, [phase, draw])
 
-  // ── HERO: auto-show text, then auto-unlock scroll ─────────────────────────
+  // ── HERO: show text & unlock body scroll ──────────────────────────────────
   useEffect(() => {
     if (phase !== 'hero') return
+    // Lock briefly so intro finishes smoothly before unlocking
     document.body.style.overflow = 'hidden'
 
-    const t1 = setTimeout(() => setHeroVisible(true), 300)
+    const t1 = setTimeout(() => setHeroVisible(true), 200)
     const t2 = setTimeout(() => {
       document.body.style.overflow = ''
       setPhase('scroll')
-    }, 2800)
+    }, 1200)
 
     return () => {
       clearTimeout(t1)
@@ -185,19 +184,15 @@ export function ScrollCanvas() {
     }
   }, [phase])
 
-  // ── SCROLL phase: frames 150→300 ──────────────────────────────────────────
+  // ── SCROLL phase: window scroll drives frames 120→240 ─────────────────────
   useEffect(() => {
     if (phase !== 'scroll') return
 
     const onScroll = () => {
-      const container = containerRef.current
-      if (!container) return
-      const rect = container.getBoundingClientRect()
-      const scrolled = -rect.top
-      const maxScroll = container.clientHeight - window.innerHeight
-      if (maxScroll <= 0) return
-
-      const pct = Math.max(0, Math.min(scrolled / maxScroll, 1))
+      const scrolled = window.scrollY
+      // First 1200px of page scroll animates portrait frames 120->240
+      const scrollRange = Math.max(window.innerHeight * 1.5, 1000)
+      const pct = Math.max(0, Math.min(scrolled / scrollRange, 1))
       setScrollPct(pct)
 
       const remaining = TOTAL_FRAMES - INTRO_END
@@ -217,34 +212,23 @@ export function ScrollCanvas() {
   }, [phase, draw])
 
   // ─────────────────────────────────────────────────────────────────────────
-  // RENDER: Single Canvas node maintained throughout all phase transitions
+  // RENDER
   // ─────────────────────────────────────────────────────────────────────────
 
-  const scrollTrackHeight = `${(TOTAL_FRAMES - INTRO_END) * 12 + 100}vh`
-
   return (
-    <div
-      ref={containerRef}
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: phase === 'scroll' ? scrollTrackHeight : '100vh',
-      }}
-    >
-      {/* Persistent Full-Screen Viewport Container */}
+    <>
+      {/* Persistent Full-Screen Canvas Fixed Background */}
       <div
         style={{
-          position: phase === 'scroll' ? 'sticky' : 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          zIndex: phase === 'scroll' ? 0 : 50,
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
           background: '#000',
           overflow: 'hidden',
+          pointerEvents: 'none',
         }}
       >
-        {/* Single Canvas Element — Never Unmounts */}
+        {/* Single Canvas Element */}
         <canvas
           ref={canvasRef}
           style={{
@@ -260,7 +244,6 @@ export function ScrollCanvas() {
           style={{
             position: 'absolute',
             inset: 0,
-            pointerEvents: 'none',
             background:
               'radial-gradient(ellipse at 50% 40%, transparent 35%, rgba(0,0,0,0.85) 100%)',
           }}
@@ -274,7 +257,6 @@ export function ScrollCanvas() {
             left: 0,
             right: 0,
             height: '50%',
-            pointerEvents: 'none',
             background:
               'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)',
           }}
@@ -348,97 +330,98 @@ export function ScrollCanvas() {
             />
           </div>
         )}
+      </div>
 
-        {/* Hero Overlay */}
+      {/* Hero Content Section — in normal document flow so it scrolls UP naturally */}
+      <section
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          padding: '0 56px 72px',
+          opacity: heroVisible ? 1 : 0,
+          transition: 'opacity 0.9s ease',
+          pointerEvents: heroVisible ? 'all' : 'none',
+        }}
+      >
+        {/* Role label */}
         <div
           style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            padding: '0 56px 72px',
-            opacity: heroVisible ? 1 : 0,
-            transition: 'opacity 0.9s ease',
-            pointerEvents: heroVisible && phase !== 'scroll' ? 'all' : 'none',
+            fontSize: 11,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.5)',
+            fontWeight: 700,
+            marginBottom: 18,
+            transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
+            transition: 'transform 0.9s ease 0.1s',
           }}
         >
-          {/* Role label */}
-          <div
-            style={{
-              fontSize: 11,
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.45)',
-              fontWeight: 700,
-              marginBottom: 18,
-              transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
-              transition: 'transform 0.9s ease 0.1s',
-            }}
-          >
-            UI/UX Designer
-          </div>
-
-          {/* Headline */}
-          <h1
-            style={{
-              fontSize: 'clamp(36px, 5vw, 76px)',
-              lineHeight: 1.06,
-              letterSpacing: '-0.04em',
-              fontWeight: 700,
-              color: '#fff',
-              maxWidth: 820,
-              margin: '0 0 22px',
-              transform: heroVisible ? 'translateY(0)' : 'translateY(24px)',
-              transition: 'transform 0.9s ease 0.2s',
-            }}
-          >
-            Designing interfaces that feel completely{' '}
-            <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>
-              effortless.
-            </span>
-          </h1>
-
-          {/* Subtext */}
-          <p
-            style={{
-              fontSize: 17,
-              color: 'rgba(255,255,255,0.55)',
-              marginBottom: 44,
-              maxWidth: 500,
-              lineHeight: 1.65,
-              transform: heroVisible ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'transform 0.9s ease 0.3s',
-            }}
-          >
-            I'm Yatin — crafting intuitive experiences for complex digital products.
-          </p>
-
-          {/* Scroll hint */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-              transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
-              transition: 'transform 0.9s ease 0.45s',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 12,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.35)',
-                fontWeight: 600,
-              }}
-            >
-              Scroll to explore
-            </div>
-            <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.3)' }}>↓</div>
-          </div>
+          UI/UX Designer
         </div>
-      </div>
-    </div>
+
+        {/* Headline */}
+        <h1
+          style={{
+            fontSize: 'clamp(36px, 5vw, 76px)',
+            lineHeight: 1.06,
+            letterSpacing: '-0.04em',
+            fontWeight: 700,
+            color: '#fff',
+            maxWidth: 820,
+            margin: '0 0 22px',
+            transform: heroVisible ? 'translateY(0)' : 'translateY(24px)',
+            transition: 'transform 0.9s ease 0.2s',
+          }}
+        >
+          Designing interfaces that feel completely{' '}
+          <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>
+            effortless.
+          </span>
+        </h1>
+
+        {/* Subtext */}
+        <p
+          style={{
+            fontSize: 17,
+            color: 'rgba(255,255,255,0.65)',
+            marginBottom: 44,
+            maxWidth: 500,
+            lineHeight: 1.65,
+            transform: heroVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'transform 0.9s ease 0.3s',
+          }}
+        >
+          I'm Yatin — crafting intuitive experiences for complex digital products.
+        </p>
+
+        {/* Scroll hint */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
+            transition: 'transform 0.9s ease 0.45s',
+          }}
+        >
+          <div
+            style={{
+              fontSize: 12,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.4)',
+              fontWeight: 600,
+            }}
+          >
+            Scroll to explore
+          </div>
+          <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)' }}>↓</div>
+        </div>
+      </section>
+    </>
   )
 }

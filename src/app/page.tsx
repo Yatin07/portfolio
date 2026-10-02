@@ -40,10 +40,15 @@ export default function Portfolio() {
 
 
   return (
-    <div style={{ background: 'var(--bg-main)', color: 'var(--text-main)', minHeight: '100vh' }}>
+    <div style={{ background: 'transparent', color: 'var(--text-main)', minHeight: '100vh' }}>
       
-      {/* Sticky Nav — always white since it sits over the dark portrait */}
-      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, padding: '24px 48px', display: 'flex', justifyContent: 'space-between', zIndex: 200 }}>
+      {/* Sticky Nav — always white with subtle dark glass blur */}
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0,
+        padding: '24px 48px', display: 'flex', justifyContent: 'space-between',
+        zIndex: 200, backdropFilter: 'blur(12px)', background: 'rgba(5, 5, 5, 0.5)',
+        borderBottom: '1px solid rgba(255,255,255,0.08)'
+      }}>
          <div style={{ fontWeight: 700, fontSize: 14, letterSpacing: '0.1em', color: '#fff' }}>YATIN.</div>
          <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.45)' }}>Press 'T' for magic</div>
       </nav>
@@ -74,8 +79,8 @@ export default function Portfolio() {
 
       <ScrollCanvas />
 
-      {/* Page sections — sit naturally in document flow after the scroll animation */}
-      <div style={{ position: 'relative', zIndex: 20, background: 'var(--bg-main)' }}>
+      {/* Page sections — transparent background so background portrait face remains continuously visible */}
+      <div style={{ position: 'relative', zIndex: 20, background: 'transparent' }}>
         <Process />
         <SelectedWork />
         <BeyondPixels />

@@ -2,41 +2,41 @@
 @import 'tailwindcss';
 
 :root {
-  --bg-main: #F9F9F9;
-  --bg-alt: #F2F2F2;
-  --card-bg: #FFFFFF;
-  --bg-nav: rgba(249, 249, 249, 0.94);
-  --bg-hover: #EBEBEB;
+  --bg-main: transparent;
+  --bg-alt: rgba(12, 12, 14, 0.45);
+  --card-bg: rgba(18, 18, 22, 0.65);
+  --bg-nav: rgba(5, 5, 5, 0.75);
+  --bg-hover: rgba(255, 255, 255, 0.08);
   
-  --border: #E5E5E5;
-  --border-dark: #D4D4D4;
+  --border: rgba(255, 255, 255, 0.12);
+  --border-dark: rgba(255, 255, 255, 0.22);
   
-  --text-main: #0A0A0A;
-  --text-secondary: #333333;
-  --text-muted: #666666;
-  --text-light: #999999;
+  --text-main: #FFFFFF;
+  --text-secondary: #E0E0E0;
+  --text-muted: #A0A0A0;
+  --text-light: #707070;
   
-  --accent: #7000FF;
-  --accent-transparent: rgba(112, 0, 255, 0.12);
+  --accent: #9D4EDD;
+  --accent-transparent: rgba(157, 78, 221, 0.18);
 }
 
 [data-theme='dark'] {
-  --bg-main: #050505;
-  --bg-alt: #0D0D0D;
-  --card-bg: #141414;
-  --bg-nav: rgba(5, 5, 5, 0.94);
-  --bg-hover: #1F1F1F;
+  --bg-main: transparent;
+  --bg-alt: rgba(12, 12, 14, 0.45);
+  --card-bg: rgba(18, 18, 22, 0.65);
+  --bg-nav: rgba(5, 5, 5, 0.75);
+  --bg-hover: rgba(255, 255, 255, 0.08);
   
-  --border: #262626;
-  --border-dark: #333333;
+  --border: rgba(255, 255, 255, 0.12);
+  --border-dark: rgba(255, 255, 255, 0.22);
   
-  --text-main: #F4F4F4;
-  --text-secondary: #D1D1D1;
-  --text-muted: #999999;
-  --text-light: #666666;
+  --text-main: #FFFFFF;
+  --text-secondary: #E0E0E0;
+  --text-muted: #A0A0A0;
+  --text-light: #707070;
   
   --accent: #9D4EDD;
-  --accent-transparent: rgba(157, 78, 221, 0.15);
+  --accent-transparent: rgba(157, 78, 221, 0.18);
 }
 
 * { box-sizing: border-box; }
