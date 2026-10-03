@@ -26,6 +26,7 @@ type Phase = 'loading' | 'intro' | 'hero' | 'scroll'
 export function ScrollCanvas() {
   const canvasRef       = useRef<HTMLCanvasElement>(null)
   const images          = useRef<Map<number, HTMLImageElement>>(new Map())
+  const loadingMap      = useRef<Map<number, boolean>>(new Map())
   const currentFrame    = useRef<number>(1)
   const rafRef          = useRef<number>(0)
   const lastTimeRef     = useRef<number>(0)
@@ -36,13 +37,31 @@ export function ScrollCanvas() {
   const [scrollPct, setScrollPct]     = useState(0)
   const [loadPct, setLoadPct]         = useState(0)
 
-  // ── Draw a frame with sharp high-DPR scaling ──────────────────────────────
+  // ── Draw a frame with sharp high-DPR scaling & fallback support ──────────────
   const draw = useCallback((n: number) => {
     const canvas = canvasRef.current
-    const img    = images.current.get(n)
-    if (!canvas || !img) return
+    if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+
+    // 1. Direct match
+    let img = images.current.get(n)
+
+    // 2. Fallback to nearest available loaded frame if target frame is still downloading
+    if (!img) {
+      for (let delta = 1; delta <= 30; delta++) {
+        if (n - delta >= 1 && images.current.has(n - delta)) {
+          img = images.current.get(n - delta)
+          break
+        }
+        if (n + delta <= TOTAL_FRAMES && images.current.has(n + delta)) {
+          img = images.current.get(n + delta)
+          break
+        }
+      }
+    }
+
+    if (!img) return
 
     const cw = canvas.width
     const ch = canvas.height
@@ -90,36 +109,91 @@ export function ScrollCanvas() {
     resizeCanvas()
   }, [phase, resizeCanvas])
 
-  // ── Preload frames ────────────────────────────────────────────────────────
-  useEffect(() => {
-    let done = 0
-    const total = TOTAL_FRAMES
+  // ── Optimized Staged Frame Preloading ──────────────────────────────────────
+  const loadSingleFrame = useCallback((n: number): Promise<HTMLImageElement> => {
+    if (images.current.has(n)) {
+      return Promise.resolve(images.current.get(n)!)
+    }
+    if (loadingMap.current.has(n)) {
+      return new Promise((resolve) => {
+        const check = setInterval(() => {
+          if (images.current.has(n)) {
+            clearInterval(check)
+            resolve(images.current.get(n)!)
+          }
+        }, 30)
+      })
+    }
 
-    const loadOne = (n: number) => {
+    loadingMap.current.set(n, true)
+    return new Promise((resolve, reject) => {
       const img = new Image()
       img.src = frameUrl(n)
       img.onload = () => {
         images.current.set(n, img)
-        done++
-        setLoadPct(done / total)
-
-        if (n === 1) {
-          draw(1)
-        }
-        if (done === 15) {
-          setPhase('intro')
-        }
+        loadingMap.current.delete(n)
+        resolve(img)
       }
-      img.onerror = () => {
-        done++
-        setLoadPct(done / total)
+      img.onerror = (err) => {
+        loadingMap.current.delete(n)
+        reject(err)
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    let loadedCount = 0
+    const total = TOTAL_FRAMES
+
+    const updateProgress = () => {
+      loadedCount = images.current.size
+      setLoadPct(Math.min(loadedCount / total, 1))
+    }
+
+    // Step 1: Preload Frame 1 immediately for fast initial paint
+    loadSingleFrame(1).then(() => {
+      draw(1)
+      updateProgress()
+    }).catch(() => {})
+
+    // Step 2: Preload initial intro chunk (frames 1..15)
+    const initialIntroBatch = Array.from({ length: 15 }, (_, i) => i + 1)
+    Promise.all(initialIntroBatch.map(loadSingleFrame)).then(() => {
+      updateProgress()
+      setPhase('intro')
+    }).catch(() => {
+      setPhase('intro')
+    })
+
+    // Step 3: Stream rest of intro frames (16..120) in small parallel batches
+    const streamFramesInChunks = async () => {
+      const chunkSize = 12
+      for (let i = 16; i <= INTRO_END; i += chunkSize) {
+        const chunk = []
+        for (let j = i; j < i + chunkSize && j <= INTRO_END; j++) {
+          chunk.push(j)
+        }
+        await Promise.all(chunk.map(loadSingleFrame).map(p => p.catch(() => {})))
+        updateProgress()
+      }
+
+      // Step 4: Stream scroll frames (121..240) in background
+      for (let i = INTRO_END + 1; i <= TOTAL_FRAMES; i += chunkSize) {
+        const chunk = []
+        for (let j = i; j < i + chunkSize && j <= TOTAL_FRAMES; j++) {
+          chunk.push(j)
+        }
+        await Promise.all(chunk.map(loadSingleFrame).map(p => p.catch(() => {})))
+        updateProgress()
       }
     }
 
-    PLAYLIST.forEach(loadOne)
-    for (let n = INTRO_END + 1; n <= TOTAL_FRAMES; n++) loadOne(n)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    streamFramesInChunks()
+
+    return () => {
+      // Cleanup
+    }
+  }, [draw, loadSingleFrame])
 
   // ── AUTO-PLAY: frames 1..120 ──────────────────────────────────────────────
   useEffect(() => {
@@ -147,11 +221,6 @@ export function ScrollCanvas() {
       }
 
       const frameNum = PLAYLIST[idx]
-      if (!images.current.has(frameNum)) {
-        rafRef.current = requestAnimationFrame(tick)
-        return
-      }
-
       currentFrame.current = frameNum
       draw(frameNum)
       playlistIdx.current = idx + 1
@@ -199,6 +268,10 @@ export function ScrollCanvas() {
       const frameNum  = INTRO_END + Math.round(pct * remaining)
       const clamped   = Math.min(frameNum, TOTAL_FRAMES)
 
+      if (!images.current.has(clamped)) {
+        loadSingleFrame(clamped)
+      }
+
       if (currentFrame.current !== clamped) {
         currentFrame.current = clamped
         cancelAnimationFrame(rafRef.current)
@@ -209,7 +282,7 @@ export function ScrollCanvas() {
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
-  }, [phase, draw])
+  }, [phase, draw, loadSingleFrame])
 
   // ─────────────────────────────────────────────────────────────────────────
   // RENDER
@@ -353,11 +426,11 @@ export function ScrollCanvas() {
             fontSize: 11,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.5)',
+            color: 'var(--text-tertiary)',
             fontWeight: 700,
             marginBottom: 18,
             transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
-            transition: 'transform 0.9s ease 0.1s',
+            transition: 'transform 0.9s ease 0.1s, color 0.4s ease',
           }}
         >
           UI/UX Designer
@@ -370,15 +443,16 @@ export function ScrollCanvas() {
             lineHeight: 1.06,
             letterSpacing: '-0.04em',
             fontWeight: 700,
-            color: '#fff',
+            color: 'var(--text-primary)',
+            textShadow: '0 2px 20px rgba(0,0,0,0.85), 0 1px 4px rgba(0,0,0,0.9)',
             maxWidth: 820,
             margin: '0 0 22px',
             transform: heroVisible ? 'translateY(0)' : 'translateY(24px)',
-            transition: 'transform 0.9s ease 0.2s',
+            transition: 'transform 0.9s ease 0.2s, color 0.4s ease',
           }}
         >
           Designing interfaces that feel completely{' '}
-          <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>
+          <span style={{ color: 'var(--accent-fg)', fontStyle: 'italic', transition: 'color 0.4s ease' }}>
             effortless.
           </span>
         </h1>
@@ -387,12 +461,12 @@ export function ScrollCanvas() {
         <p
           style={{
             fontSize: 17,
-            color: 'rgba(255,255,255,0.65)',
+            color: 'var(--text-secondary)',
             marginBottom: 44,
             maxWidth: 500,
             lineHeight: 1.65,
             transform: heroVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'transform 0.9s ease 0.3s',
+            transition: 'transform 0.9s ease 0.3s, color 0.4s ease',
           }}
         >
           I'm Yatin — crafting intuitive experiences for complex digital products.
@@ -413,13 +487,14 @@ export function ScrollCanvas() {
               fontSize: 12,
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'var(--text-tertiary)',
               fontWeight: 600,
+              transition: 'color 0.4s ease',
             }}
           >
             Scroll to explore
           </div>
-          <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)' }}>↓</div>
+          <div style={{ fontSize: 14, color: 'var(--text-tertiary)', transition: 'color 0.4s ease' }}>↓</div>
         </div>
       </section>
     </>
