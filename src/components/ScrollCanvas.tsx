@@ -361,16 +361,18 @@ export function ScrollCanvas() {
                 />
               </div>
 
-              {/* Frame Loading Status Subtext */}
+              {/* Loading Status Subtext */}
               <div
                 style={{
-                  fontSize: 12,
+                  fontSize: 11,
+                  fontFamily: 'var(--font-mono, monospace)',
+                  letterSpacing: '0.12em',
                   color: 'var(--text-tertiary)',
-                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
                   transition: 'color 0.4s ease',
                 }}
               >
-                Preloading frame {Math.min(Math.round(loadPct * INTRO_END), INTRO_END)} of {INTRO_END}
+                Loading Assets
               </div>
             </div>
           </motion.div>
