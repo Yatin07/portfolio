@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const TOTAL_FRAMES = 240   // Extracted directly from 1080p original video
 const INTRO_END    = 120   // auto-play intro ends at frame 120 (~5s at 24fps)
 const FPS          = 24    // cinematic auto-play speed
 
-// Frames played during intro: 1..120
 function buildPlaylist(): number[] {
   const list: number[] = []
   for (let i = 1; i <= INTRO_END; i++) {
@@ -26,7 +26,6 @@ type Phase = 'loading' | 'intro' | 'hero' | 'scroll'
 export function ScrollCanvas() {
   const canvasRef       = useRef<HTMLCanvasElement>(null)
   const images          = useRef<Map<number, HTMLImageElement>>(new Map())
-  const loadingMap      = useRef<Map<number, boolean>>(new Map())
   const currentFrame    = useRef<number>(1)
   const rafRef          = useRef<number>(0)
   const lastTimeRef     = useRef<number>(0)
@@ -37,31 +36,34 @@ export function ScrollCanvas() {
   const [scrollPct, setScrollPct]     = useState(0)
   const [loadPct, setLoadPct]         = useState(0)
 
-  // ── Draw a frame with sharp high-DPR scaling & fallback support ──────────────
+  // ── Draw a frame with sharp high-DPR scaling & nearest fallback ─────────────
   const draw = useCallback((n: number) => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
 
-    // 1. Direct match
     let img = images.current.get(n)
 
-    // 2. Fallback to nearest available loaded frame if target frame is still downloading
+    // Fallback: if target frame isn't ready, pick nearest loaded frame
     if (!img) {
-      for (let delta = 1; delta <= 30; delta++) {
-        if (n - delta >= 1 && images.current.has(n - delta)) {
-          img = images.current.get(n - delta)
-          break
-        }
-        if (n + delta <= TOTAL_FRAMES && images.current.has(n + delta)) {
-          img = images.current.get(n + delta)
+      for (let i = n - 1; i >= 1; i--) {
+        if (images.current.has(i)) {
+          img = images.current.get(i)
           break
         }
       }
     }
-
+    if (!img) {
+      for (let i = n + 1; i <= TOTAL_FRAMES; i++) {
+        if (images.current.has(i)) {
+          img = images.current.get(i)
+          break
+        }
+      }
+    }
     if (!img) return
+
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
 
     const cw = canvas.width
     const ch = canvas.height
@@ -109,91 +111,75 @@ export function ScrollCanvas() {
     resizeCanvas()
   }, [phase, resizeCanvas])
 
-  // ── Optimized Staged Frame Preloading ──────────────────────────────────────
-  const loadSingleFrame = useCallback((n: number): Promise<HTMLImageElement> => {
-    if (images.current.has(n)) {
-      return Promise.resolve(images.current.get(n)!)
-    }
-    if (loadingMap.current.has(n)) {
-      return new Promise((resolve) => {
-        const check = setInterval(() => {
-          if (images.current.has(n)) {
-            clearInterval(check)
-            resolve(images.current.get(n)!)
-          }
-        }, 30)
-      })
-    }
+  // ── Controlled Parallel Preloading for Essential Intro Frames (1..120) ──────
+  useEffect(() => {
+    let introDone = 0
+    let nextIntroFrame = 1
+    const CONCURRENCY = 6
 
-    loadingMap.current.set(n, true)
-    return new Promise((resolve, reject) => {
+    const loadNextIntro = () => {
+      if (nextIntroFrame > INTRO_END) return
+      const n = nextIntroFrame++
       const img = new Image()
       img.src = frameUrl(n)
-      img.onload = () => {
+
+      const onComplete = () => {
         images.current.set(n, img)
-        loadingMap.current.delete(n)
-        resolve(img)
-      }
-      img.onerror = (err) => {
-        loadingMap.current.delete(n)
-        reject(err)
-      }
-    })
-  }, [])
+        introDone++
+        setLoadPct(Math.min(introDone / INTRO_END, 1))
 
+        if (n === 1) {
+          draw(1)
+        }
+
+        if (introDone >= INTRO_END) {
+          setTimeout(() => {
+            setPhase('intro')
+          }, 350)
+        } else {
+          loadNextIntro()
+        }
+      }
+
+      img.onload = onComplete
+      img.onerror = onComplete
+
+      if ('decode' in img && typeof img.decode === 'function') {
+        img.decode().catch(() => {})
+      }
+    }
+
+    for (let i = 0; i < CONCURRENCY; i++) {
+      loadNextIntro()
+    }
+  }, [draw])
+
+  // ── Background Preloading for Remaining Scroll Frames (121..240) ──────────
   useEffect(() => {
-    let loadedCount = 0
-    const total = TOTAL_FRAMES
+    if (phase !== 'intro') return
 
-    const updateProgress = () => {
-      loadedCount = images.current.size
-      setLoadPct(Math.min(loadedCount / total, 1))
-    }
+    let nextScrollFrame = INTRO_END + 1
+    const CONCURRENCY = 6
 
-    // Step 1: Preload Frame 1 immediately for fast initial paint
-    loadSingleFrame(1).then(() => {
-      draw(1)
-      updateProgress()
-    }).catch(() => {})
-
-    // Step 2: Preload initial intro chunk (frames 1..15)
-    const initialIntroBatch = Array.from({ length: 15 }, (_, i) => i + 1)
-    Promise.all(initialIntroBatch.map(loadSingleFrame)).then(() => {
-      updateProgress()
-      setPhase('intro')
-    }).catch(() => {
-      setPhase('intro')
-    })
-
-    // Step 3: Stream rest of intro frames (16..120) in small parallel batches
-    const streamFramesInChunks = async () => {
-      const chunkSize = 12
-      for (let i = 16; i <= INTRO_END; i += chunkSize) {
-        const chunk = []
-        for (let j = i; j < i + chunkSize && j <= INTRO_END; j++) {
-          chunk.push(j)
-        }
-        await Promise.all(chunk.map(loadSingleFrame).map(p => p.catch(() => {})))
-        updateProgress()
+    const loadNextScroll = () => {
+      if (nextScrollFrame > TOTAL_FRAMES) return
+      const n = nextScrollFrame++
+      const img = new Image()
+      img.src = frameUrl(n)
+      img.onload = img.onerror = () => {
+        images.current.set(n, img)
+        loadNextScroll()
       }
 
-      // Step 4: Stream scroll frames (121..240) in background
-      for (let i = INTRO_END + 1; i <= TOTAL_FRAMES; i += chunkSize) {
-        const chunk = []
-        for (let j = i; j < i + chunkSize && j <= TOTAL_FRAMES; j++) {
-          chunk.push(j)
-        }
-        await Promise.all(chunk.map(loadSingleFrame).map(p => p.catch(() => {})))
-        updateProgress()
+      if ('decode' in img && typeof img.decode === 'function') {
+        img.decode().catch(() => {})
       }
     }
 
-    streamFramesInChunks()
-
-    return () => {
-      // Cleanup
+    for (let i = 0; i < CONCURRENCY; i++) {
+      loadNextScroll()
     }
-  }, [draw, loadSingleFrame])
+  }, [phase])
 
   // ── AUTO-PLAY: frames 1..120 ──────────────────────────────────────────────
   useEffect(() => {
@@ -237,7 +223,6 @@ export function ScrollCanvas() {
   // ── HERO: show text & unlock body scroll ──────────────────────────────────
   useEffect(() => {
     if (phase !== 'hero') return
-    // Lock briefly so intro finishes smoothly before unlocking
     document.body.style.overflow = 'hidden'
 
     const t1 = setTimeout(() => setHeroVisible(true), 200)
@@ -259,7 +244,6 @@ export function ScrollCanvas() {
 
     const onScroll = () => {
       const scrolled = window.scrollY
-      // First 1200px of page scroll animates portrait frames 120->240
       const scrollRange = Math.max(window.innerHeight * 1.5, 1000)
       const pct = Math.max(0, Math.min(scrolled / scrollRange, 1))
       setScrollPct(pct)
@@ -267,10 +251,6 @@ export function ScrollCanvas() {
       const remaining = TOTAL_FRAMES - INTRO_END
       const frameNum  = INTRO_END + Math.round(pct * remaining)
       const clamped   = Math.min(frameNum, TOTAL_FRAMES)
-
-      if (!images.current.has(clamped)) {
-        loadSingleFrame(clamped)
-      }
 
       if (currentFrame.current !== clamped) {
         currentFrame.current = clamped
@@ -282,14 +262,115 @@ export function ScrollCanvas() {
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
-  }, [phase, draw, loadSingleFrame])
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // RENDER
-  // ─────────────────────────────────────────────────────────────────────────
+  }, [phase, draw])
 
   return (
     <>
+      {/* Stylish Theme-Matched Initial Loader Screen */}
+      <AnimatePresence>
+        {phase === 'loading' && (
+          <motion.div
+            key="preloader"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999999,
+              background: 'var(--bg-main, #0C0C0E)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 24,
+              transition: 'background 0.4s ease',
+            }}
+          >
+            <div style={{ textAlign: 'center', maxWidth: 360, width: '100%' }}>
+              {/* Brand Monogram */}
+              <div
+                style={{
+                  fontSize: 20,
+                  fontWeight: 800,
+                  letterSpacing: '0.18em',
+                  color: 'var(--text-primary)',
+                  marginBottom: 8,
+                  transition: 'color 0.4s ease',
+                }}
+              >
+                YATIN.
+              </div>
+
+              {/* Subhead Tag */}
+              <div
+                style={{
+                  fontSize: 11,
+                  fontFamily: 'var(--font-mono, monospace)',
+                  fontWeight: 700,
+                  letterSpacing: '0.15em',
+                  color: 'var(--accent-fg)',
+                  marginBottom: 32,
+                  transition: 'color 0.4s ease',
+                }}
+              >
+                DARKROOM ENLARGER · INITIALIZING STOCKS
+              </div>
+
+              {/* Percentage Counter */}
+              <div
+                style={{
+                  fontSize: 48,
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  letterSpacing: '-0.03em',
+                  marginBottom: 20,
+                  transition: 'color 0.4s ease',
+                }}
+              >
+                {Math.round(loadPct * 100)}%
+              </div>
+
+              {/* Stylish Progress Bar */}
+              <div
+                style={{
+                  width: '100%',
+                  height: 4,
+                  background: 'var(--border, rgba(243, 238, 231, 0.12))',
+                  borderRadius: 4,
+                  overflow: 'hidden',
+                  marginBottom: 16,
+                  position: 'relative',
+                }}
+              >
+                <motion.div
+                  style={{
+                    height: '100%',
+                    background: 'var(--accent)',
+                    boxShadow: '0 0 16px var(--accent-transparent)',
+                    borderRadius: 4,
+                    width: `${Math.max(4, loadPct * 100)}%`,
+                    transition: 'width 0.15s ease-out, background 0.4s ease',
+                  }}
+                />
+              </div>
+
+              {/* Frame Loading Status Subtext */}
+              <div
+                style={{
+                  fontSize: 12,
+                  color: 'var(--text-tertiary)',
+                  letterSpacing: '0.05em',
+                  transition: 'color 0.4s ease',
+                }}
+              >
+                Preloading frame {Math.min(Math.round(loadPct * INTRO_END), INTRO_END)} of {INTRO_END}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Persistent Full-Screen Canvas Fixed Background */}
       <div
         style={{
@@ -334,29 +415,6 @@ export function ScrollCanvas() {
               'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)',
           }}
         />
-
-        {/* Loading Progress Bar */}
-        {phase === 'loading' && (
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: 2,
-              background: 'rgba(255,255,255,0.08)',
-            }}
-          >
-            <div
-              style={{
-                height: '100%',
-                background: 'var(--accent)',
-                width: `${loadPct * 100}%`,
-                transition: 'width 0.1s linear',
-              }}
-            />
-          </div>
-        )}
 
         {/* Auto-Play Intro Progress Bar */}
         {phase === 'intro' && (
@@ -426,11 +484,11 @@ export function ScrollCanvas() {
             fontSize: 11,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
-            color: 'var(--text-tertiary)',
+            color: 'rgba(255,255,255,0.5)',
             fontWeight: 700,
             marginBottom: 18,
             transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
-            transition: 'transform 0.9s ease 0.1s, color 0.4s ease',
+            transition: 'transform 0.9s ease 0.1s',
           }}
         >
           UI/UX Designer
@@ -443,16 +501,15 @@ export function ScrollCanvas() {
             lineHeight: 1.06,
             letterSpacing: '-0.04em',
             fontWeight: 700,
-            color: 'var(--text-primary)',
-            textShadow: '0 2px 20px rgba(0,0,0,0.85), 0 1px 4px rgba(0,0,0,0.9)',
+            color: '#fff',
             maxWidth: 820,
             margin: '0 0 22px',
             transform: heroVisible ? 'translateY(0)' : 'translateY(24px)',
-            transition: 'transform 0.9s ease 0.2s, color 0.4s ease',
+            transition: 'transform 0.9s ease 0.2s',
           }}
         >
           Designing interfaces that feel completely{' '}
-          <span style={{ color: 'var(--accent-fg)', fontStyle: 'italic', transition: 'color 0.4s ease' }}>
+          <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>
             effortless.
           </span>
         </h1>
@@ -461,12 +518,12 @@ export function ScrollCanvas() {
         <p
           style={{
             fontSize: 17,
-            color: 'var(--text-secondary)',
+            color: 'rgba(255,255,255,0.65)',
             marginBottom: 44,
             maxWidth: 500,
             lineHeight: 1.65,
             transform: heroVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'transform 0.9s ease 0.3s, color 0.4s ease',
+            transition: 'transform 0.9s ease 0.3s',
           }}
         >
           I'm Yatin — crafting intuitive experiences for complex digital products.
@@ -487,16 +544,16 @@ export function ScrollCanvas() {
               fontSize: 12,
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
-              color: 'var(--text-tertiary)',
+              color: 'rgba(255,255,255,0.4)',
               fontWeight: 600,
-              transition: 'color 0.4s ease',
             }}
           >
             Scroll to explore
           </div>
-          <div style={{ fontSize: 14, color: 'var(--text-tertiary)', transition: 'color 0.4s ease' }}>↓</div>
+          <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)' }}>↓</div>
         </div>
       </section>
     </>
   )
 }
+
