@@ -93,3 +93,65 @@ test('no serious accessibility violations', async ({ page }) => {
   const r = await new AxeBuilder({ page }).analyze();
   expect(r.violations.filter((v) => ['serious', 'critical'].includes(v.impact ?? ''))).toEqual([]);
 });
+
+test('darkroom: frame develops on click', async ({ page }) => {
+  await page.goto('/');
+  const frame1 = page.locator('div[role="button"][aria-label*="Frame 01"]');
+  await frame1.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+  await expect(frame1).toContainText('RAW');
+  await frame1.click();
+  await expect(page.locator('div[role="dialog"]')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('div[role="dialog"]')).toBeHidden();
+  await expect(frame1).toContainText('DEV');
+});
+
+test('darkroom: chess puzzle accepts Nf7 as solved and rejects wrong move', async ({ page }) => {
+  await page.goto('/');
+  const chessFrame = page.locator('div[role="button"][aria-label*="Frame 01"]');
+  await chessFrame.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+  await chessFrame.click();
+  await expect(page.locator('div[role="dialog"]')).toBeVisible();
+
+  // Test wrong move: d8 to e6 (Ne6+)
+  const d8Square = page.locator('button[aria-label*="Square d8"]');
+  const e6Square = page.locator('button[aria-label*="Square e6"]');
+  await d8Square.click();
+  await e6Square.click();
+  await expect(page.locator('[role="region"][aria-live="polite"]')).toContainText(/Mated|Not mate|failed/i);
+
+  // Click Reset
+  await page.getByRole('button', { name: 'Reset' }).click();
+
+  // Test correct move: d8 to f7 (Nf7#)
+  const f7Square = page.locator('button[aria-label*="Square f7"]');
+  await d8Square.click();
+  await f7Square.click();
+  await expect(page.locator('[role="region"][aria-live="polite"]')).toContainText(/Solved/i);
+
+  // Close dialog
+  await page.keyboard.press('Escape');
+});
+
+test('pressing t while focused in an input does not change theme', async ({ page }) => {
+  await page.goto('/');
+  const snap = () =>
+    page.evaluate(
+      () =>
+        document.documentElement.className + '|' + (document.documentElement.dataset.theme || '') + '|' +
+        getComputedStyle(document.body).backgroundColor
+    );
+  const before = await snap();
+
+  // Create temporary input element and focus it
+  await page.evaluate(() => {
+    const input = document.createElement('input');
+    input.id = 'test-input';
+    document.body.appendChild(input);
+    input.focus();
+  });
+
+  await page.keyboard.press('t');
+  const after = await snap();
+  expect(after).toBe(before);
+});

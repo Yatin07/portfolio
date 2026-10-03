@@ -1,6 +1,7 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState } from 'react'
+import { ExternalLink, Github } from 'lucide-react'
 
 export function SelectedWork() {
   const targetRef = useRef<HTMLDivElement>(null)
@@ -10,9 +11,11 @@ export function SelectedWork() {
   const projects = [
     {
       title: 'Face Attribute Analysis',
-      role: 'Product Designer',
+      role: 'Product Designer & Developer',
       problem: 'AI results were too technical for everyday users.',
       decision: 'Designed a friendly, human-readable slider interface instead of raw JSON output.',
+      github: 'https://github.com/Yatin07/realtime-face-analysis',
+      live: 'https://realtime-face-analysis.vercel.app/',
       Prototype: () => {
          const [val, setVal] = useState(50)
          return (
@@ -26,9 +29,10 @@ export function SelectedWork() {
     },
     {
       title: 'Document Q&A Experience',
-      role: 'UX Designer',
+      role: 'UX Designer & Developer (RAG)',
       problem: 'Users could not verify where the AI got its answers.',
       decision: 'Created a dual-pane view highlighting source snippets alongside answers.',
+      github: 'https://github.com/Yatin07/RAG_chatbot',
       Prototype: () => {
          const [open, setOpen] = useState(false)
          return (
@@ -48,6 +52,7 @@ export function SelectedWork() {
       role: 'UI/UX Designer & Dev',
       problem: 'Reporting issues was chaotic and untracked.',
       decision: 'A simple Kanban-style swipe interface for students and wardens.',
+      github: 'https://github.com/Yatin07/HostelComplaintApp',
       Prototype: () => {
          const [status, setStatus] = useState(0)
          const states = ['Open', 'In Progress', 'Resolved']
@@ -74,16 +79,66 @@ export function SelectedWork() {
             <div key={i} style={{ width: '100vw', padding: '0 48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
                 <div>
-                  <div style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 24 }}>SELECTED WORK 0{i+1}</div>
-                  <h3 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: 32 }}>{p.title}</h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginBottom: 40 }}>
-                    <div><strong style={{ display: 'block', fontSize: 12, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Role</strong> {p.role}</div>
-                    <div><strong style={{ display: 'block', fontSize: 12, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Problem</strong> {p.problem}</div>
-                    <div><strong style={{ display: 'block', fontSize: 12, color: 'var(--accent)', textTransform: 'uppercase' }}>Decision</strong> {p.decision}</div>
+                  <div style={{ fontSize: 12, color: 'var(--accent-fg)', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 24, transition: 'color 0.4s ease' }}>SELECTED WORK 0{i+1}</div>
+                  <h3 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: 32, color: 'var(--text-primary)', transition: 'color 0.4s ease' }}>{p.title}</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 32, color: 'var(--text-secondary)', transition: 'color 0.4s ease' }}>
+                    <div><strong style={{ display: 'block', fontSize: 12, color: 'var(--text-tertiary)', textTransform: 'uppercase', transition: 'color 0.4s ease' }}>Role</strong> {p.role}</div>
+                    <div><strong style={{ display: 'block', fontSize: 12, color: 'var(--text-tertiary)', textTransform: 'uppercase', transition: 'color 0.4s ease' }}>Problem</strong> {p.problem}</div>
+                    <div><strong style={{ display: 'block', fontSize: 12, color: 'var(--accent-fg)', textTransform: 'uppercase', transition: 'color 0.4s ease' }}>Decision</strong> {p.decision}</div>
+                  </div>
+
+                  {/* Project External Links */}
+                  <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+                    {p.live && (
+                      <a
+                        href={p.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          padding: '10px 22px',
+                          borderRadius: 30,
+                          background: 'var(--accent)',
+                          color: 'var(--accent-text)',
+                          fontSize: 13,
+                          fontWeight: 700,
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 6,
+                          boxShadow: '0 4px 14px var(--accent-transparent)',
+                          transition: 'background 0.4s ease, color 0.4s ease',
+                        }}
+                      >
+                        Live Demo <ExternalLink size={14} />
+                      </a>
+                    )}
+                    {p.github && (
+                      <a
+                        href={p.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          padding: '10px 22px',
+                          borderRadius: 30,
+                          border: '1px solid var(--border)',
+                          color: 'var(--text-primary)',
+                          fontSize: 13,
+                          fontWeight: 600,
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 6,
+                          background: 'var(--bg-hover)',
+                          transition: 'color 0.4s ease, border-color 0.4s ease',
+                        }}
+                      >
+                        GitHub Code <Github size={14} />
+                      </a>
+                    )}
                   </div>
                 </div>
-                <div style={{ background: 'var(--card-bg)', padding: 48, borderRadius: 32, border: '1px solid var(--border)', boxShadow: '0 40px 80px rgba(0,0,0,0.05)' }}>
-                  <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 24, textAlign: 'center' }}>Interactive Prototype</p>
+                <div style={{ background: 'var(--card-bg)', padding: 48, borderRadius: 32, border: '1px solid var(--border)', boxShadow: '0 40px 80px rgba(0,0,0,0.05)', transition: 'border-color 0.4s ease' }}>
+                  <p style={{ fontSize: 14, color: 'var(--text-tertiary)', marginBottom: 24, textAlign: 'center', transition: 'color 0.4s ease' }}>Interactive Prototype</p>
                   <p.Prototype />
                 </div>
               </div>

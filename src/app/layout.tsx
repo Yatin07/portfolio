@@ -19,19 +19,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            window.addEventListener('keydown', function(e) {
-              if (e.key.toLowerCase() === 't') {
-                if (document.documentElement.getAttribute('data-theme') === 'dark') {
-                  document.documentElement.removeAttribute('data-theme');
-                } else {
-                  document.documentElement.setAttribute('data-theme', 'dark');
-                }
-              }
-            });
-          `
-        }} />
         {children}
       </body>
     </html>

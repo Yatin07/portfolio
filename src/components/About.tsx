@@ -29,23 +29,23 @@ export function About() {
               boxShadow: '0 30px 60px rgba(0,0,0,0.4)',
             }}
           >
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 16 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--accent-fg)', marginBottom: 16, transition: 'color 0.4s ease' }}>
               PROFILE HIGHLIGHTS
             </div>
-            <h3 style={{ fontSize: 28, fontWeight: 700, color: '#FFF', marginBottom: 16 }}>
+            <h3 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 16, transition: 'color 0.4s ease' }}>
               Yatin Patil
             </h3>
-            <p style={{ fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 24 }}>
+            <p style={{ fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 24, transition: 'color 0.4s ease' }}>
               Information Technology student & self-driven product designer passionate about human-centered interfaces, AI integration, and fluid micro-interactions.
             </p>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 12, padding: '6px 14px', borderRadius: 20, background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border)', color: 'var(--text-main)' }}>
+              <span style={{ fontSize: 12, padding: '6px 14px', borderRadius: 20, background: 'var(--bg-hover)', border: '1px solid var(--border)', color: 'var(--text-secondary)', transition: 'color 0.4s ease, border-color 0.4s ease' }}>
                 B.Tech IT
               </span>
-              <span style={{ fontSize: 12, padding: '6px 14px', borderRadius: 20, background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border)', color: 'var(--text-main)' }}>
+              <span style={{ fontSize: 12, padding: '6px 14px', borderRadius: 20, background: 'var(--bg-hover)', border: '1px solid var(--border)', color: 'var(--text-secondary)', transition: 'color 0.4s ease, border-color 0.4s ease' }}>
                 UI/UX Research
               </span>
-              <span style={{ fontSize: 12, padding: '6px 14px', borderRadius: 20, background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border)', color: 'var(--text-main)' }}>
+              <span style={{ fontSize: 12, padding: '6px 14px', borderRadius: 20, background: 'var(--bg-hover)', border: '1px solid var(--border)', color: 'var(--text-secondary)', transition: 'color 0.4s ease, border-color 0.4s ease' }}>
                 Frontend Engineering
               </span>
             </div>
@@ -54,19 +54,19 @@ export function About() {
 
         {/* Text & Obsession Canvas */}
         <div>
-          <h2 style={{ fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, letterSpacing: '-0.03em', color: '#FFF', marginBottom: 24 }}>
+          <h2 style={{ fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, letterSpacing: '-0.03em', color: 'var(--text-primary)', marginBottom: 24, transition: 'color 0.4s ease' }}>
             I build for humans.
           </h2>
-          <p style={{ fontSize: 17, color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: 40 }}>
+          <p style={{ fontSize: 17, color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: 40, transition: 'color 0.4s ease' }}>
             Hi, I'm Yatin. I believe the best interfaces are the ones you don't even notice—they just work, fluidly and effortlessly.
           </p>
 
-          <h3 style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 700, color: 'var(--accent)', marginBottom: 20 }}>
+          <h3 style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 700, color: 'var(--accent-fg)', marginBottom: 20, transition: 'color 0.4s ease' }}>
             Things I'm obsessed with
           </h3>
           
-          <div style={{ position: 'relative', height: 220, border: '1px dashed var(--border)', borderRadius: 20, background: 'rgba(12, 12, 14, 0.5)', backdropFilter: 'blur(12px)', overflow: 'hidden' }}>
-             <p style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.15em', pointerEvents: 'none' }}>Drag around</p>
+          <div style={{ position: 'relative', height: 220, border: '1px dashed var(--border)', borderRadius: 20, background: 'rgba(12, 12, 14, 0.5)', backdropFilter: 'blur(12px)', overflow: 'hidden', transition: 'border-color 0.4s ease' }}>
+             <p style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'var(--text-tertiary)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.15em', pointerEvents: 'none', transition: 'color 0.4s ease' }}>Drag around</p>
              {obsessions.map((obs, i) => (
                <motion.div 
                  key={obs.title}
@@ -75,9 +75,10 @@ export function About() {
                  style={{
                    position: 'absolute', top: 20 + (i*24), left: 20 + (i*36),
                    padding: '10px 18px', background: 'rgba(25, 25, 30, 0.85)', border: '1px solid var(--border)',
-                   borderRadius: 12, fontSize: 13, fontWeight: 600, color: '#FFF', cursor: 'grab',
+                   borderRadius: 12, fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', cursor: 'grab',
                    backdropFilter: 'blur(8px)',
-                   boxShadow: '0 4px 16px rgba(0,0,0,0.2)'
+                   boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+                   transition: 'color 0.4s ease, border-color 0.4s ease',
                  }}>
                  {obs.title}
                </motion.div>

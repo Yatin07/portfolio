@@ -1,8 +1,8 @@
 export const site = {
   name: "Yatin Patil",
   role: "UI/UX Designer",
-  email: "yatin.patil@example.com", // Need a real valid email format to pass regex tests
-  linkedin: "https://linkedin.com/in/yatin-patil",
+  email: "yatinpatilyp07@gmail.com",
+  linkedin: "https://www.linkedin.com/in/yatinpatil07",
   github: "https://github.com/Yatin07",
   resume: "/resume.pdf"
 };

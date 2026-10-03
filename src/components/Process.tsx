@@ -20,10 +20,10 @@ export function Process() {
         
         <div style={{ width: '100%', maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80 }}>
           <div>
-            <h2 style={{ fontSize: 'clamp(32px, 4vw, 56px)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: 24 }}>
+            <h2 style={{ fontSize: 'clamp(32px, 4vw, 56px)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: 24, color: 'var(--text-primary)', transition: 'color 0.4s ease' }}>
               I show the thinking behind it.
             </h2>
-            <p style={{ fontSize: 18, color: 'var(--text-secondary)' }}>The raw, unpolished process of getting to effortless.</p>
+            <p style={{ fontSize: 18, color: 'var(--text-secondary)', transition: 'color 0.4s ease' }}>The raw, unpolished process of getting to effortless.</p>
           </div>
 
           <div style={{ position: 'relative', height: 400 }}>
@@ -37,13 +37,13 @@ export function Process() {
               
               return (
                 <motion.div key={stage.id} style={{ position: 'absolute', inset: 0, opacity, y, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <div style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 16 }}>STAGE 0{stage.id}</div>
-                  <h3 style={{ fontSize: 40, fontWeight: 700, marginBottom: 16, color: 'var(--text-main)' }}>{stage.title}</h3>
-                  <p style={{ fontSize: 20, color: 'var(--text-secondary)', marginBottom: 24 }}>{stage.desc}</p>
+                  <div style={{ fontSize: 12, color: 'var(--accent-fg)', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 16, transition: 'color 0.4s ease' }}>STAGE 0{stage.id}</div>
+                  <h3 style={{ fontSize: 40, fontWeight: 700, marginBottom: 16, color: 'var(--text-primary)', transition: 'color 0.4s ease' }}>{stage.title}</h3>
+                  <p style={{ fontSize: 20, color: 'var(--text-secondary)', marginBottom: 24, transition: 'color 0.4s ease' }}>{stage.desc}</p>
                   
-                  <div style={{ padding: 16, background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 12, borderLeft: '4px solid var(--accent)' }}>
-                    <div style={{ fontSize: 12, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 4, fontWeight: 600 }}>What actually happened:</div>
-                    <div style={{ fontSize: 14, color: 'var(--text-main)', fontStyle: 'italic' }}>{stage.honest}</div>
+                  <div style={{ padding: 16, background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 12, borderLeft: '4px solid var(--accent)', transition: 'border-color 0.4s ease' }}>
+                    <div style={{ fontSize: 12, textTransform: 'uppercase', color: 'var(--text-tertiary)', marginBottom: 4, fontWeight: 600, transition: 'color 0.4s ease' }}>What actually happened:</div>
+                    <div style={{ fontSize: 14, color: 'var(--text-primary)', fontStyle: 'italic', transition: 'color 0.4s ease' }}>{stage.honest}</div>
                   </div>
                 </motion.div>
               )

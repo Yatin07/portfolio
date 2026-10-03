@@ -2,46 +2,110 @@
 @import 'tailwindcss';
 
 :root {
-  --bg-main: transparent;
+  --bg-main: #0C0C0E;
+  --bg-darkroom: #0C0C0E;
   --bg-alt: rgba(12, 12, 14, 0.45);
   --card-bg: rgba(18, 18, 22, 0.65);
   --bg-nav: rgba(5, 5, 5, 0.75);
-  --bg-hover: rgba(255, 255, 255, 0.08);
+  --bg-hover: rgba(243, 238, 231, 0.08);
   
-  --border: rgba(255, 255, 255, 0.12);
-  --border-dark: rgba(255, 255, 255, 0.22);
+  --border: rgba(243, 238, 231, 0.12);
+  --border-dark: rgba(243, 238, 231, 0.22);
   
-  --text-main: #FFFFFF;
-  --text-secondary: #E0E0E0;
-  --text-muted: #A0A0A0;
+  --text-main: #F3EEE7;
+  --text-primary: #F3EEE7;
+  --text-secondary: #C5C0B8;
+  --text-tertiary: #9A958E;
+  --text-muted: #9A958E;
   --text-light: #707070;
   
+  --accent: #FF4B3A;
+  --accent-fg: #FF6B5B;
+  --accent-text: #0C0C0E;
+  --accent-transparent: rgba(255, 75, 58, 0.18);
+}
+
+/* 🎞️ Theme Overrides */
+[data-theme='portra'] {
+  --bg-main: #140E0A;
+  --text-main: #FAF3EC;
+  --text-primary: #FAF3EC;
+  --text-secondary: #D4C9BF;
+  --text-tertiary: #A3978C;
+  --text-muted: #A3978C;
+  --accent: #FF9E7D;
+  --accent-fg: #FFAF94;
+  --accent-text: #1C0F0A;
+  --accent-transparent: rgba(255, 158, 125, 0.18);
+}
+
+[data-theme='cinestill'] {
+  --bg-main: #081016;
+  --text-main: #F0F8FA;
+  --text-primary: #F0F8FA;
+  --text-secondary: #BFCED4;
+  --text-tertiary: #8AA0A8;
+  --text-muted: #8AA0A8;
+  --accent: #00E5FF;
+  --accent-fg: #33ECFF;
+  --accent-text: #051820;
+  --accent-transparent: rgba(0, 229, 255, 0.18);
+}
+
+[data-theme='trix'] {
+  --bg-main: #0A0A0C;
+  --text-main: #D9D9DC;
+  --text-primary: #D9D9DC;
+  --text-secondary: #B0B0B5;
+  --text-tertiary: #85858A;
+  --text-muted: #85858A;
+  --accent: #FFFFFF;
+  --accent-fg: #FFFFFF;
+  --accent-text: #121214;
+  --accent-transparent: rgba(224, 224, 224, 0.18);
+}
+
+[data-theme='velvia'] {
+  --bg-main: #08120B;
+  --text-main: #F2FAF5;
+  --text-primary: #F2FAF5;
+  --text-secondary: #C2D6C9;
+  --text-tertiary: #8CA896;
+  --text-muted: #8CA896;
+  --accent: #00E676;
+  --accent-fg: #33EB91;
+  --accent-text: #052012;
+  --accent-transparent: rgba(0, 230, 118, 0.18);
+}
+
+[data-theme='purplehaze'] {
+  --bg-main: #100818;
+  --text-main: #F8F2FC;
+  --text-primary: #F8F2FC;
+  --text-secondary: #D2C4DE;
+  --text-tertiary: #9D8BB0;
+  --text-muted: #9D8BB0;
   --accent: #9D4EDD;
+  --accent-fg: #B983F0;
+  --accent-text: #FFFFFF;
   --accent-transparent: rgba(157, 78, 221, 0.18);
 }
 
-[data-theme='dark'] {
-  --bg-main: transparent;
-  --bg-alt: rgba(12, 12, 14, 0.45);
-  --card-bg: rgba(18, 18, 22, 0.65);
-  --bg-nav: rgba(5, 5, 5, 0.75);
-  --bg-hover: rgba(255, 255, 255, 0.08);
-  
-  --border: rgba(255, 255, 255, 0.12);
-  --border-dark: rgba(255, 255, 255, 0.22);
-  
-  --text-main: #FFFFFF;
-  --text-secondary: #E0E0E0;
-  --text-muted: #A0A0A0;
-  --text-light: #707070;
-  
-  --accent: #9D4EDD;
-  --accent-transparent: rgba(157, 78, 221, 0.18);
+* {
+  box-sizing: border-box;
+  caret-color: var(--accent-fg);
 }
 
-* { box-sizing: border-box; }
+::selection {
+  background-color: var(--accent);
+  color: var(--accent-text);
+}
 
-html { scroll-behavior: smooth; background-color: var(--bg-main); }
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-main);
+  transition: background-color 0.4s ease;
+}
 
 body::before {
   content: '';
@@ -62,15 +126,25 @@ body::after {
   z-index: -2;
   background: radial-gradient(circle at 50% 0%, var(--accent-transparent) 0%, transparent 60%);
   opacity: 0.7;
+  transition: background 0.4s ease;
 }
 
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg-main);
-  color: var(--text-main);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
-  cursor: none;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+/* 🎯 Global Focus-Visible & Accessibility Rings */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--accent-fg) !important;
+  outline-offset: 3px !important;
 }
 
 ::-webkit-scrollbar { width: 0; }
