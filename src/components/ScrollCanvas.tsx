@@ -134,7 +134,14 @@ export function ScrollCanvas() {
 
         if (introDone >= INTRO_END) {
           setTimeout(() => {
-            setPhase('intro')
+            const isScrolledDown = typeof window !== 'undefined' && window.scrollY > 100
+            if (isScrolledDown) {
+              document.body.style.overflow = ''
+              setHeroVisible(true)
+              setPhase('scroll')
+            } else {
+              setPhase('intro')
+            }
           }, 350)
         } else {
           loadNextIntro()
@@ -156,7 +163,7 @@ export function ScrollCanvas() {
 
   // ── Background Preloading for Remaining Scroll Frames (121..240) ──────────
   useEffect(() => {
-    if (phase !== 'intro') return
+    if (phase !== 'intro' && phase !== 'scroll') return
 
     let nextScrollFrame = INTRO_END + 1
     const CONCURRENCY = 6
@@ -241,6 +248,7 @@ export function ScrollCanvas() {
   // ── SCROLL phase: window scroll drives frames 120→240 ─────────────────────
   useEffect(() => {
     if (phase !== 'scroll') return
+    document.body.style.overflow = ''
 
     const onScroll = () => {
       const scrolled = window.scrollY
@@ -252,11 +260,9 @@ export function ScrollCanvas() {
       const frameNum  = INTRO_END + Math.round(pct * remaining)
       const clamped   = Math.min(frameNum, TOTAL_FRAMES)
 
-      if (currentFrame.current !== clamped) {
-        currentFrame.current = clamped
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = requestAnimationFrame(() => draw(clamped))
-      }
+      currentFrame.current = clamped
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = requestAnimationFrame(() => draw(clamped))
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
