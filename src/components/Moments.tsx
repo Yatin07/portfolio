@@ -95,7 +95,7 @@ export function Moments() {
                   <div style={{ width: 40, height: 10, background: 'var(--accent-fg)', opacity: 0.4, margin: '-15px auto 10px', borderRadius: 2 }} />
                   
                   <div style={{ width: '100%', height: 180, borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border)', background: '#0A0A0C' }}>
-                    <img src={galleryList[0]} alt={frontCard.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={galleryList[0]} alt={frontCard.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 35%' }} />
                   </div>
                   
                   <div style={{ marginTop: 10, fontSize: 11, fontFamily: 'var(--font-mono, monospace)', color: 'var(--accent-fg)', fontWeight: 700, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -104,7 +104,7 @@ export function Moments() {
                   </div>
                 </motion.div>
 
-                {/* Photo 2: Secondary Photo (For NMIMS Tech Fiesta 2025 with 2 photos) */}
+                {/* Photo 2: Secondary Photo */}
                 {galleryList.length > 1 && (
                   <motion.div
                     key={`${frontCard.id}-photo-1`}
@@ -131,7 +131,7 @@ export function Moments() {
                     <div style={{ width: 40, height: 10, background: 'var(--accent-fg)', opacity: 0.4, margin: '-15px auto 10px', borderRadius: 2 }} />
                     
                     <div style={{ width: '100%', height: 210, borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border)', background: '#0A0A0C' }}>
-                      <img src={galleryList[1]} alt={frontCard.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <img src={galleryList[1]} alt={frontCard.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 75%' }} />
                     </div>
 
                     <div style={{ marginTop: 10, fontSize: 11, fontFamily: 'var(--font-mono, monospace)', color: 'var(--accent-fg)', fontWeight: 700, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 6 }}>

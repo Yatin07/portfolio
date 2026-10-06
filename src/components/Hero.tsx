@@ -13,7 +13,7 @@ export function Hero() {
       <motion.div style={{ maxWidth: 1280, margin: '0 auto', width: '100%', y, zIndex: 10 }}>
         
         <div style={{ fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-tertiary)', fontWeight: 700, marginBottom: 28, transition: 'color 0.4s ease' }}>
-          UI/UX Designer
+          Creative Technologist
         </div>
         
         <h1 style={{

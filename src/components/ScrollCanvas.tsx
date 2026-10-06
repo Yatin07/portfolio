@@ -499,7 +499,7 @@ export function ScrollCanvas() {
             transition: 'transform 0.9s ease 0.1s',
           }}
         >
-          UI/UX Designer
+          Creative Technologist
         </div>
 
         {/* Headline */}

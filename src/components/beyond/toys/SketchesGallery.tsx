@@ -22,8 +22,8 @@ export const SKETCHES: SketchItem[] = [
   {
     id: 'shivaji-maharaj',
     title: 'Chhatrapati Shivaji Maharaj',
-    subtitle: 'Historical Portrait in Graphite',
-    medium: 'Pencil & Graphite on Paper',
+    subtitle: 'Historical Portrait',
+    medium: 'Graphite on Paper',
     image: '/sketches/shivaji_maharaj.jpg',
     year: '2024',
     aspectRatio: '4/5'
@@ -31,38 +31,56 @@ export const SKETCHES: SketchItem[] = [
   {
     id: 'red-accent-portrait',
     title: 'Lady in Red Accents',
-    subtitle: 'Side Profile with Crimson Highlights',
-    medium: 'Graphite & Colored Accent',
+    subtitle: 'Side Profile',
+    medium: 'Graphite & Color',
     image: '/sketches/red_accent_portrait.jpg',
     year: '2024',
     aspectRatio: '3/4'
   },
   {
     id: 'wavy-hair-portrait',
-    title: 'Wavy Locks Study',
-    subtitle: 'Texture & Flow Graphite Shading',
-    medium: 'Soft Pencil & Blending Stump',
+    title: 'Wavy Locks',
+    subtitle: 'Graphite Shading',
+    medium: 'Soft Pencil',
     image: '/sketches/wavy_hair_portrait.jpg',
     year: '2024',
     aspectRatio: '3/4'
   },
   {
     id: 'beard-glasses-portrait',
-    title: 'Portrait in Glasses',
-    subtitle: 'Value & Perspective Study',
-    medium: 'Graphite & Charcoal',
+    title: 'Top G',
+    subtitle: 'Perspective Portrait',
+    medium: 'Graphite',
     image: '/sketches/beard_glasses_portrait.jpg',
     year: '2024',
     aspectRatio: '3/4'
   },
   {
     id: 'realistic-eye-study',
-    title: 'Iris Realism Study',
-    subtitle: 'Reflective Light & Lash Detailing',
-    medium: '2B-8B Graphite Pencils',
+    title: 'Iris Realism',
+    subtitle: 'Reflective Light Detail',
+    medium: 'Graphite',
     image: '/sketches/realistic_eye_study.jpg',
     year: '2024',
-    aspectRatio: '4/3'
+    aspectRatio: '3/4'
+  },
+  {
+    id: 'anklet-red-accent-sketch',
+    title: 'Anklet & Payal',
+    subtitle: 'Red Accent Composition',
+    medium: 'Graphite & Color',
+    image: '/sketches/anklet_red_accent_sketch.jpg',
+    year: '2024',
+    aspectRatio: '3/4'
+  },
+  {
+    id: 'gojo-honored-one',
+    title: 'The Honored One / Kit-Kat',
+    subtitle: 'Jujutsu Kaisen Anime Sketch',
+    medium: 'Graphite & Ink',
+    image: '/sketches/gojo_honored_one.jpg',
+    year: '2024',
+    aspectRatio: '3/4'
   }
 ]
 
@@ -198,9 +216,6 @@ export default function SketchesGallery({ soundEnabled }: Props) {
               <h4 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                 {current.title}
               </h4>
-              <p style={{ fontSize: 12, color: 'var(--text-tertiary)', margin: '2px 0 0' }}>
-                {current.subtitle} • <span style={{ color: 'var(--accent-fg)' }}>{current.medium}</span>
-              </p>
             </div>
 
             <div style={{ display: 'flex', gap: 8 }}>
@@ -276,9 +291,9 @@ export default function SketchesGallery({ soundEnabled }: Props) {
           animate={{ opacity: 1, y: 0 }}
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 12,
-            maxHeight: 420,
+            maxHeight: 440,
             overflowY: 'auto',
             paddingRight: 4,
           }}
@@ -302,12 +317,9 @@ export default function SketchesGallery({ soundEnabled }: Props) {
               <div style={{ width: '100%', height: 160, borderRadius: 10, overflow: 'hidden', background: '#050507' }}>
                 <img src={s.image} alt={s.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-              <div style={{ marginTop: 6, textAlign: 'left', padding: '2px 4px' }}>
+              <div style={{ marginTop: 6, textAlign: 'center', padding: '2px 4px' }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {s.title}
-                </div>
-                <div style={{ fontSize: 10, color: 'var(--accent-fg)', fontFamily: 'var(--font-mono, monospace)' }}>
-                  {s.year} • Hand-Drawn
                 </div>
               </div>
             </motion.div>

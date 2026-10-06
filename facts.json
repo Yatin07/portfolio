@@ -1,0 +1,105 @@
+{
+  "frames": {
+    "count": 240,
+    "autoplayFps": 24,
+    "introFrames": 120,
+    "scrollPlayback": "Scrubbed dynamically across frames 1 to 240 via requestAnimationFrame and scroll position ratio"
+  },
+  "typography": {
+    "heroH1": "Inter, sans-serif",
+    "sectionTitle": "Inter, sans-serif",
+    "bodyText": "Inter, sans-serif",
+    "monoLabel": "Inter, sans-serif",
+    "note": "All headings, body text, and labels share Inter sans-serif font family. No serif font family is present on the site."
+  },
+  "palette": {
+    "base": "#0C0C0E",
+    "surface": "rgba(18, 18, 22, 0.65)",
+    "text": "#F3EEE7",
+    "muted": "#9A958E",
+    "accent": "#FF4B3A",
+    "themes": [
+      { "id": "portra", "toast": "Film Stock: Portra (warm peach)", "accent": "#FF9E7D" },
+      { "id": "cinestill", "toast": "Film Stock: CineStill (teal-orange)", "accent": "#00E5FF" },
+      { "id": "trix", "toast": "Film Stock: Tri-X (monochrome)", "accent": "#E0E0E0" },
+      { "id": "velvia", "toast": "Film Stock: Velvia (vivid green)", "accent": "#00E676" },
+      { "id": "purplehaze", "toast": "Film Stock: Purple Haze (violet)", "accent": "#9D4EDD" },
+      { "id": "default", "toast": "Reset to Default Stock", "accent": "#FF4B3A" }
+    ]
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "name": "Hero & Film Canvas",
+      "contains": "Hero title, UI/UX role label, and canvas video background",
+      "interaction": "scroll plays the film",
+      "isTechnicalEducational": false
+    },
+    {
+      "id": "process",
+      "name": "Engineering Process",
+      "contains": "3 phase cards: Discovery, Architecture, Tactile Code",
+      "interaction": "hover to highlight step",
+      "isTechnicalEducational": false
+    },
+    {
+      "id": "work",
+      "name": "Selected Work",
+      "contains": "3 interactive prototype cards: Darkroom Canvas Engine, Tactile UI Kit, Real-time Data Viz",
+      "interaction": "click interactive prototype",
+      "isTechnicalEducational": false
+    },
+    {
+      "id": "beyond",
+      "name": "Beyond Pixels",
+      "contains": "6 interactive darkroom frames + hidden 7th frame",
+      "interaction": "hover dims neighbors & click opens toy modal",
+      "isTechnicalEducational": false
+    },
+    {
+      "id": "about",
+      "name": "About & Obsessions",
+      "contains": "B.Tech IT degree background, core technical skills, and 5 obsession pills",
+      "interaction": "hover pills to highlight",
+      "isTechnicalEducational": true
+    },
+    {
+      "id": "principles",
+      "name": "Principles",
+      "contains": "4 core design and engineering principles",
+      "interaction": "hover principle cards",
+      "isTechnicalEducational": false
+    },
+    {
+      "id": "moments",
+      "name": "Moments & Hackathons",
+      "contains": "Stacked card deck of 6 milestones with polaroid popups",
+      "interaction": "click to cycle stack",
+      "isTechnicalEducational": true
+    },
+    {
+      "id": "contact",
+      "name": "Contact",
+      "contains": "Direct email link, downloadable resume, LinkedIn and GitHub profiles",
+      "interaction": "hover magnetic buttons & click links",
+      "isTechnicalEducational": false
+    }
+  ],
+  "contactType": "Links only (no form inputs)",
+  "momentsType": "Card stack with popups",
+  "contactSheetGrid": {
+    "desktop": "3 columns (repeat(auto-fit, minmax(320px, 1fr)) >= 1056px)",
+    "tablet": "2 columns (664px to 1055px)",
+    "mobile": "1 column (< 664px)"
+  },
+  "featureImplementations": {
+    "lighterImageFormats": true,
+    "smallerMobileFrames": false,
+    "progressiveLoading": true,
+    "introSkipButton": false,
+    "safetyUnlock": true,
+    "reducedMotionFallback": true,
+    "tKeyGuardInInputs": true,
+    "claimsLedger": true
+  }
+}
