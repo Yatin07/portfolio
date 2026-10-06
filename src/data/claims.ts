@@ -62,6 +62,7 @@ export const claims: Claim[] = [
     id: 'hackathon-buildathon', 
     title: 'Buildathon 2026', 
     projectName: 'Rapid Prototype Challenge',
+    github: 'https://github.com/Yatin07/Buildathon',
     year: '2026', 
     text: 'Participated in national-level hackathons, designing and developing full-stack prototypes under high-pressure time constraints.', 
     tags: ['Prototyping', 'React', 'Rapid MVP', 'Team Lead'],
