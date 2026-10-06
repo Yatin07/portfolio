@@ -68,7 +68,7 @@ export const SKETCHES: SketchItem[] = [
 
 export default function SketchesGallery({ soundEnabled }: Props) {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
-  const [viewMode, setViewMode] = useState<'single' | 'grid'>('single')
+  const [viewMode, setViewMode] = useState<'single' | 'grid'>('grid')
   const [lightboxSketch, setLightboxSketch] = useState<SketchItem | null>(null)
 
   const current = SKETCHES[currentIndex]
