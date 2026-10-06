@@ -21,6 +21,8 @@ export function Frame({
   onClick,
   children,
 }: FrameProps) {
+  const [isHovered, setIsHovered] = React.useState(false)
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
@@ -28,26 +30,31 @@ export function Frame({
     }
   }
 
+  const activeGlow = isLit || isHovered
+
   return (
     <div
       role="button"
       tabIndex={0}
       onClick={onClick}
       onKeyDown={handleKeyDown}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       aria-label={`Frame ${number} ${caption}. ${developed ? 'Developed. Tap to open' : 'Undeveloped. Tap to develop.'}`}
       style={{
         position: 'relative',
         background: 'var(--surface-darkroom, #16161A)',
-        border: '1px solid var(--border-darkroom, #2A2A30)',
+        border: activeGlow ? '1px solid var(--accent-fg, #FF4B3A)' : '1px solid var(--border-darkroom, #2A2A30)',
         borderRadius: 16,
         padding: '16px 16px 20px',
         cursor: 'pointer',
         outline: 'none',
-        transition: 'all 0.4s ease',
-        boxShadow: isLit
-          ? '0 0 25px var(--accent-transparent), inset 0 0 15px var(--accent-transparent)'
+        transform: activeGlow ? 'translateY(-4px) scale(1.015)' : 'none',
+        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+        boxShadow: activeGlow
+          ? '0 0 35px var(--accent-transparent, rgba(255, 75, 58, 0.35)), 0 10px 25px rgba(0,0,0,0.5), inset 0 0 20px var(--accent-transparent, rgba(255, 75, 58, 0.2))'
           : '0 10px 30px rgba(0,0,0,0.4)',
-        borderColor: isLit ? 'var(--accent-fg)' : 'var(--border)',
+        borderColor: activeGlow ? 'var(--accent-fg, #FF4B3A)' : 'var(--border-darkroom, #2A2A30)',
       }}
     >
       {/* Top Film Sprocket Holes Strip */}
@@ -60,7 +67,8 @@ export function Frame({
               height: 6,
               borderRadius: 2,
               background: '#0C0C0E',
-              border: '1px solid var(--border)',
+              border: activeGlow ? '1px solid var(--accent-fg, #FF4B3A)' : '1px solid var(--border)',
+              transition: 'border-color 0.3s ease',
             }}
           />
         ))}
@@ -74,11 +82,11 @@ export function Frame({
           alignItems: 'center',
           fontFamily: 'var(--font-mono, monospace)',
           fontSize: 11,
-          color: isLit ? 'var(--accent-fg)' : 'var(--text-tertiary)',
+          color: activeGlow ? 'var(--accent-fg, #FF4B3A)' : 'var(--text-tertiary)',
           marginBottom: 12,
           fontWeight: 600,
           letterSpacing: '0.08em',
-          transition: 'color 0.4s ease',
+          transition: 'color 0.3s ease',
         }}
       >
         <span>{number} · {caption}</span>
@@ -139,7 +147,8 @@ export function Frame({
               height: 6,
               borderRadius: 2,
               background: '#0C0C0E',
-              border: '1px solid var(--border-darkroom, #2A2A30)',
+              border: activeGlow ? '1px solid var(--accent-fg, #FF4B3A)' : '1px solid var(--border-darkroom, #2A2A30)',
+              transition: 'border-color 0.3s ease',
             }}
           />
         ))}

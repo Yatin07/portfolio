@@ -42,6 +42,7 @@ export function ContactSheet({ soundEnabled }: ContactSheetProps) {
   const [developedIds, setDevelopedIds] = useState<number[]>([])
   const [activeFrameId, setActiveFrameId] = useState<number | null>(null)
   const [litFrameId, setLitFrameId] = useState<number | null>(null)
+  const [hoveredFrameId, setHoveredFrameId] = useState<number | null>(null)
   const [cursorY, setCursorY] = useState<number>(-500)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false)
 
@@ -168,7 +169,7 @@ export function ContactSheet({ soundEnabled }: ContactSheetProps) {
       >
         {FRAME_DEFS.map((f) => {
           const isDev = developedIds.includes(f.id)
-          const isLit = prefersReducedMotion || litFrameId === f.id
+          const isLit = prefersReducedMotion || litFrameId === f.id || hoveredFrameId === f.id
 
           return (
             <Frame
