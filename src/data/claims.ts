@@ -7,6 +7,7 @@ export type Claim = {
   title?: string;
   projectName?: string;
   github?: string;
+  tags?: string[];
   image?: string;
   gallery?: string[];
 };
@@ -18,7 +19,8 @@ export const claims: Claim[] = [
     projectName: 'UrbanVoice Mobile App',
     github: 'https://github.com/Yatin07/Buildathon',
     year: '2025', 
-    text: 'Developed UrbanVoice — an AI-powered civic issue reporting mobile app built with Flutter, Firebase & Gemini AI featuring location-based department routing, live tracking, and community voting.', 
+    text: 'Developed UrbanVoice — an AI-powered civic issue reporting mobile app featuring Gemini AI auto-categorization, location-based department routing, live tracking, and community upvoting.', 
+    tags: ['Flutter', 'Firebase', 'Gemini AI', 'Android APK'],
     status: 'verified', 
     evidence: 'owner-confirmed',
     image: '/moments/sih_2025.jpg'
@@ -30,6 +32,7 @@ export const claims: Claim[] = [
     github: 'https://github.com/Yatin07/CodePlay',
     year: '2025', 
     text: 'Built HealthSphere — a doctor-patient healthcare portal with Electronic Health Records (EHR) management, video consultation interface, appointment scheduling, and secure messaging.', 
+    tags: ['Node.js', 'Firebase DB', 'EHR', 'WebRTC'],
     status: 'verified', 
     evidence: 'owner-confirmed',
     image: '/moments/nmfiesta_2025_group.jpg',
@@ -38,32 +41,40 @@ export const claims: Claim[] = [
   { 
     id: 'edu-nmims', 
     title: 'B.Tech IT - MPSTME', 
+    projectName: 'Information Technology Degree',
     year: '2023-2027', 
-    text: 'Pursuing B.Tech in Information Technology at NMIMS University.', 
+    text: 'Pursuing B.Tech in Information Technology at NMIMS University with a focus on UI/UX design, software architecture, and machine learning.', 
+    tags: ['Algorithms', 'UI/UX', 'Full-Stack', 'Data Structures'],
     status: 'verified', 
     evidence: 'owner-confirmed from resume' 
   },
   { 
     id: 'internship-ibm', 
     title: 'IBM SkillsBuild Internship', 
+    projectName: 'Data Analytics & Dashboards',
     year: '2024', 
-    text: 'Designed analytical reports and dashboards for data-driven decision making.', 
+    text: 'Designed analytical reports and data-driven dashboards for executive decision making, synthesizing complex metrics into intuitive visual reports.', 
+    tags: ['Data Visualization', 'Dashboards', 'Analytics', 'UX Reports'],
     status: 'verified', 
     evidence: 'owner-confirmed from resume' 
   },
   { 
     id: 'hackathon-buildathon', 
     title: 'Buildathon 2026', 
+    projectName: 'Rapid Prototype Challenge',
     year: '2026', 
-    text: 'Participated in national-level hackathons, developing prototypes under time constraints.', 
+    text: 'Participated in national-level hackathons, designing and developing full-stack prototypes under high-pressure time constraints.', 
+    tags: ['Prototyping', 'React', 'Rapid MVP', 'Team Lead'],
     status: 'verified', 
     evidence: 'owner-confirmed from resume' 
   },
   { 
     id: 'comp-sas', 
     title: 'SAS Curiosity Cup', 
+    projectName: 'Global Analytics Competition',
     year: '2025', 
-    text: 'Competed in a Global Data Analytics Competition, applying problem-solving to real-world challenges.', 
+    text: 'Competed in a Global Data Analytics Competition, applying statistical problem-solving to real-world datasets and user research.', 
+    tags: ['Data Science', 'SAS', 'Global Competition', 'Analytics'],
     status: 'verified', 
     evidence: 'owner-confirmed from resume' 
   }
