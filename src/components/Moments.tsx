@@ -1,7 +1,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Layers } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Layers, Github, ExternalLink } from 'lucide-react'
 import { claims } from '../data/claims'
 
 export function Moments() {
@@ -10,6 +10,8 @@ export function Moments() {
     .map((c, i) => ({
       id: c.id,
       title: c.title || 'Achievement',
+      projectName: c.projectName,
+      github: c.github,
       desc: c.text,
       year: c.year || '2024',
       image: c.image,
@@ -109,7 +111,7 @@ export function Moments() {
                 <div>
                   {/* Event Image Display */}
                   {currentImg ? (
-                    <div style={{ position: 'relative', width: '100%', height: 190, borderRadius: 16, overflow: 'hidden', marginBottom: 18, border: '1px solid var(--border)', background: '#0A0A0C' }}>
+                    <div style={{ position: 'relative', width: '100%', height: 180, borderRadius: 16, overflow: 'hidden', marginBottom: 14, border: '1px solid var(--border)', background: '#0A0A0C' }}>
                       <img
                         src={currentImg}
                         alt={card.title}
@@ -146,18 +148,45 @@ export function Moments() {
                     </div>
                   ) : null}
 
-                  {/* Date & Title */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                  {/* Date & Title & GitHub link */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
                     <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: 12, fontWeight: 700, color: 'var(--accent-fg)', transition: 'color 0.4s ease' }}>
                       {card.year}
                     </span>
+
+                    {card.github && isFront && (
+                      <a
+                        href={card.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 4,
+                          fontSize: 11,
+                          fontWeight: 600,
+                          color: 'var(--text-primary)',
+                          background: 'var(--bg-hover)',
+                          border: '1px solid var(--border)',
+                          borderRadius: 14,
+                          padding: '3px 10px',
+                          textDecoration: 'none',
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        <Github size={12} />
+                        <span>Code</span>
+                        <ExternalLink size={10} />
+                      </a>
+                    )}
                   </div>
 
-                  <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: 'var(--text-primary)', textAlign: 'left', lineHeight: 1.25, transition: 'color 0.4s ease' }}>
+                  <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6, color: 'var(--text-primary)', textAlign: 'left', lineHeight: 1.25, transition: 'color 0.4s ease' }}>
                     {card.title}
                   </h3>
 
-                  <p style={{ fontSize: 14, color: 'var(--text-secondary)', textAlign: 'left', lineHeight: 1.5, transition: 'color 0.4s ease' }}>
+                  <p style={{ fontSize: 13, color: 'var(--text-secondary)', textAlign: 'left', lineHeight: 1.45, transition: 'color 0.4s ease' }}>
                     {card.desc}
                   </p>
                 </div>

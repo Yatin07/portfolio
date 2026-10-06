@@ -5,6 +5,8 @@ export type Claim = {
   evidence: string; 
   year?: string; 
   title?: string;
+  projectName?: string;
+  github?: string;
   image?: string;
   gallery?: string[];
 };
@@ -13,8 +15,10 @@ export const claims: Claim[] = [
   { 
     id: 'hackathon-sih-2025', 
     title: 'Smart India Hackathon 2025', 
+    projectName: 'UrbanVoice Mobile App',
+    github: 'https://github.com/Yatin07/Buildathon',
     year: '2025', 
-    text: 'Participated in SIH 2025, tackling real-world challenge statements with innovative software solutions and collaborative engineering.', 
+    text: 'Developed UrbanVoice — an AI-powered civic issue reporting mobile app built with Flutter, Firebase & Gemini AI featuring location-based department routing, live tracking, and community voting.', 
     status: 'verified', 
     evidence: 'owner-confirmed',
     image: '/moments/sih_2025.jpg'
@@ -22,8 +26,10 @@ export const claims: Claim[] = [
   { 
     id: 'hackathon-nmfiesta-2025', 
     title: 'NMIMS Tech Fiesta 2025', 
+    projectName: 'HealthSphere Portal',
+    github: 'https://github.com/Yatin07/CodePlay',
     year: '2025', 
-    text: 'Competed in the 24-Hour Innovation Challenge at NMIMS Tech Fiesta 2025, prototyping high-impact solutions under pressure.', 
+    text: 'Built HealthSphere — a doctor-patient healthcare portal with Electronic Health Records (EHR) management, video consultation interface, appointment scheduling, and secure messaging.', 
     status: 'verified', 
     evidence: 'owner-confirmed',
     image: '/moments/nmfiesta_2025_group.jpg',
