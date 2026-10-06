@@ -13,6 +13,7 @@ const GymBar = dynamic(() => import('./toys/GymBar'), { ssr: false })
 const MusicDeck = dynamic(() => import('./toys/MusicDeck'), { ssr: false })
 const PenaltyShootout = dynamic(() => import('./toys/PenaltyShootout'), { ssr: false })
 const BeforeAfter = dynamic(() => import('./toys/BeforeAfter'), { ssr: false })
+const SketchesGallery = dynamic(() => import('./toys/SketchesGallery'), { ssr: false })
 const TwoSum = dynamic(() => import('./toys/TwoSum'), { ssr: false })
 
 type ContactSheetProps = {
@@ -33,7 +34,7 @@ const FRAME_DEFS: FrameDef[] = [
   { id: 2, number: '02', caption: 'GYM', title: 'Load the bar', sub: 'Barbell plate loading simulator', aspectRatio: '4/3' },
   { id: 3, number: '03', caption: 'MUSIC', title: 'Press play', sub: 'Interactive 4-pad drum sampler', aspectRatio: '4/3' },
   { id: 4, number: '04', caption: 'FOOTBALL', title: 'Take the penalty', sub: 'Penalty shootout simulator', aspectRatio: '4/3' },
-  { id: 5, number: '05', caption: 'EDITING', title: 'Before / After', sub: 'Color grading split slider', aspectRatio: '4/3' },
+  { id: 5, number: '05', caption: 'SKETCHES', title: 'Pencil & Graphite Fine Art', sub: '5 Hand-Drawn Sketches Gallery', aspectRatio: '4/3' },
   { id: 6, number: '06', caption: 'LEETCODE', title: '250+ Problems Solved', sub: 'Live Stats & Heatmap', aspectRatio: '4/3' },
 ]
 
@@ -119,7 +120,7 @@ export function ContactSheet({ soundEnabled }: ContactSheetProps) {
       case 2: return <GymBar soundEnabled={soundEnabled} />
       case 3: return <MusicDeck soundEnabled={soundEnabled} />
       case 4: return <PenaltyShootout soundEnabled={soundEnabled} />
-      case 5: return <BeforeAfter soundEnabled={soundEnabled} />
+      case 5: return <SketchesGallery soundEnabled={soundEnabled} />
       case 6: return <TwoSum soundEnabled={soundEnabled} />
       default: return null
     }
