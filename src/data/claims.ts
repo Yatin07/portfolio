@@ -26,6 +26,19 @@ export const claims: Claim[] = [
     image: '/moments/sih_2025.jpg'
   },
   { 
+    id: 'expo-mobile-app-2026', 
+    title: 'Mobile App Development Expo', 
+    projectName: 'App Showcase & Faculty Pitch',
+    github: 'https://github.com/Yatin07/Buildathon',
+    year: '2026', 
+    text: 'Demonstrated live mobile app innovations during expert evaluation sessions at MPSTME, presenting architecture, UI/UX design, and real-time backend integrations.', 
+    tags: ['Mobile Expo', 'Flutter', 'Live Pitch', 'UI/UX Demo'],
+    status: 'verified', 
+    evidence: 'owner-confirmed',
+    image: '/moments/mobile_app_expo_1.jpg',
+    gallery: ['/moments/mobile_app_expo_1.jpg', '/moments/mobile_app_expo_2.jpg']
+  },
+  { 
     id: 'hackathon-nmfiesta-2025', 
     title: 'NMIMS Tech Fiesta 2025', 
     projectName: 'HealthSphere Portal',
