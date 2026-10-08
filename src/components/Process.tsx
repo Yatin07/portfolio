@@ -28,12 +28,26 @@ export function Process() {
 
           <div style={{ position: 'relative', height: 400 }}>
             {stages.map((stage, i) => {
-              const start = i * 0.2
-              const end = start + 0.2
+              let opacityRange: number[]
+              let yRange: number[]
+
+              if (i === 0) {
+                opacityRange = [0, 0, 0.17, 0.20]
+                yRange = [0, 0, 0, -30]
+              } else if (i === stages.length - 1) {
+                opacityRange = [0.80, 0.83, 1.0, 1.0]
+                yRange = [30, 0, 0, 0]
+              } else {
+                const s = i * 0.2
+                const e = (i + 1) * 0.2
+                opacityRange = [s, s + 0.03, e - 0.03, e]
+                yRange = [30, 0, 0, -30]
+              }
+
               // eslint-disable-next-line react-hooks/rules-of-hooks
-              const opacity = useTransform(scrollYProgress, [start - 0.1, start, end, end + 0.1], [0, 1, 1, 0])
+              const opacity = useTransform(scrollYProgress, opacityRange, [0, 1, 1, 0])
               // eslint-disable-next-line react-hooks/rules-of-hooks
-              const y = useTransform(scrollYProgress, [start - 0.1, start, end, end + 0.1], [50, 0, 0, -50])
+              const y = useTransform(scrollYProgress, opacityRange, yRange)
               
               return (
                 <motion.div key={stage.id} style={{ position: 'absolute', inset: 0, opacity, y, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>

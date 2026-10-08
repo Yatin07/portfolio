@@ -77,7 +77,7 @@ export function SelectedWork() {
         <motion.div style={{ x, display: 'flex', width: '300vw' }}>
           {projects.map((p, i) => (
             <div key={i} style={{ width: '100vw', padding: '0 48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <div style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+              <div style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 60, alignItems: 'center' }}>
                 <div>
                   <div style={{ fontSize: 12, color: 'var(--accent-fg)', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 24, transition: 'color 0.4s ease' }}>SELECTED WORK 0{i+1}</div>
                   <h3 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: 32, color: 'var(--text-primary)', transition: 'color 0.4s ease' }}>{p.title}</h3>

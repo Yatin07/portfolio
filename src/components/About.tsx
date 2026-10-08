@@ -13,7 +13,7 @@ export function About() {
 
   return (
     <section id="about" style={{ padding: '140px 48px', background: 'transparent', position: 'relative', zIndex: 10 }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 60, alignItems: 'center' }}>
         
         {/* Profile Glass Card */}
         <div style={{ position: 'relative' }}>
